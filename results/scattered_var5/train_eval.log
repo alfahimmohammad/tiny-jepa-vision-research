@@ -1,0 +1,646 @@
+.../site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+{
+ "name": "scattered_var5",
+ "mask": {
+  "strategy": "scattered",
+  "n_targets": 5,
+  "ctx_size": null,
+  "tgt_size": null,
+  "tgt_scale": [
+   0.04,
+   0.07
+  ],
+  "tgt_aspect": [
+   0.75,
+   1.5
+  ],
+  "ctx_scale": [
+   0.85,
+   1.0
+  ],
+  "min_ctx": 4,
+  "per_block": true
+ },
+ "ctx_noise": null,
+ "seed": 0,
+ "steps": 15000,
+ "batch_size": 64,
+ "lr": 0.0003,
+ "wd": 0.05,
+ "ema_start": 0.996,
+ "ema_end": 1.0,
+ "num_workers": 2,
+ "eval_every": 50,
+ "data_root": "./cifar_data",
+ "splits_path": "results/splits.json",
+ "out_root": "runs",
+ "mask_file": "masks/scattered_var5.yaml"
+}
+device: cuda
+  [eval step 0] val=0.370 clean=0.354 occ40=0.245 noise.15=0.269 heldout_loss=0.4953 rank=21.9
+ep=0 step=    0 loss=0.4941 lr=4.00e-07 ema=0.9960 ctx=44
+  [eval step 50] val=0.366 clean=0.361 occ40=0.242 noise.15=0.280 heldout_loss=0.3783 rank=23.4
+ep=0 step=   50 loss=0.3607 lr=2.04e-05 ema=0.9960 ctx=54
+  [eval step 100] val=0.371 clean=0.356 occ40=0.244 noise.15=0.270 heldout_loss=0.2930 rank=21.7
+ep=0 step=  100 loss=0.2793 lr=4.04e-05 ema=0.9960 ctx=29
+  [eval step 150] val=0.362 clean=0.352 occ40=0.244 noise.15=0.262 heldout_loss=0.2357 rank=19.2
+ep=0 step=  150 loss=0.2262 lr=6.04e-05 ema=0.9960 ctx=29
+  [eval step 200] val=0.363 clean=0.347 occ40=0.239 noise.15=0.261 heldout_loss=0.1865 rank=18.7
+ep=1 step=  200 loss=0.1752 lr=8.04e-05 ema=0.9961 ctx=44
+  [eval step 250] val=0.367 clean=0.354 occ40=0.245 noise.15=0.261 heldout_loss=0.1515 rank=18.9
+ep=1 step=  250 loss=0.1394 lr=1.00e-04 ema=0.9961 ctx=29
+  [eval step 300] val=0.365 clean=0.354 occ40=0.250 noise.15=0.270 heldout_loss=0.1311 rank=18.9
+ep=1 step=  300 loss=0.1089 lr=1.20e-04 ema=0.9961 ctx=44
+  [eval step 350] val=0.371 clean=0.347 occ40=0.255 noise.15=0.273 heldout_loss=0.1208 rank=19.8
+ep=2 step=  350 loss=0.1053 lr=1.40e-04 ema=0.9961 ctx=39
+  [eval step 400] val=0.363 clean=0.352 occ40=0.250 noise.15=0.281 heldout_loss=0.1188 rank=20.9
+ep=2 step=  400 loss=0.0918 lr=1.60e-04 ema=0.9961 ctx=44
+  [eval step 450] val=0.375 clean=0.352 occ40=0.253 noise.15=0.290 heldout_loss=0.1190 rank=22.9
+ep=2 step=  450 loss=0.0803 lr=1.80e-04 ema=0.9961 ctx=44
+  [eval step 500] val=0.373 clean=0.361 occ40=0.254 noise.15=0.296 heldout_loss=0.1231 rank=24.1
+ep=3 step=  500 loss=0.0866 lr=2.00e-04 ema=0.9961 ctx=44
+  [eval step 550] val=0.383 clean=0.365 occ40=0.262 noise.15=0.291 heldout_loss=0.1284 rank=25.9
+ep=3 step=  550 loss=0.0858 lr=2.20e-04 ema=0.9961 ctx=44
+  [eval step 600] val=0.377 clean=0.363 occ40=0.254 noise.15=0.303 heldout_loss=0.1298 rank=27.7
+ep=3 step=  600 loss=0.0874 lr=2.40e-04 ema=0.9962 ctx=29
+  [eval step 650] val=0.391 clean=0.373 occ40=0.257 noise.15=0.305 heldout_loss=0.1312 rank=30.1
+ep=4 step=  650 loss=0.0789 lr=2.60e-04 ema=0.9962 ctx=44
+  [eval step 700] val=0.394 clean=0.368 occ40=0.247 noise.15=0.301 heldout_loss=0.1277 rank=30.5
+ep=4 step=  700 loss=0.0816 lr=2.80e-04 ema=0.9962 ctx=29
+  [eval step 750] val=0.388 clean=0.368 occ40=0.243 noise.15=0.306 heldout_loss=0.1273 rank=31.1
+ep=4 step=  750 loss=0.0775 lr=3.00e-04 ema=0.9962 ctx=44
+  [eval step 800] val=0.394 clean=0.371 occ40=0.240 noise.15=0.308 heldout_loss=0.1264 rank=32.9
+ep=5 step=  800 loss=0.0741 lr=3.00e-04 ema=0.9962 ctx=44
+  [eval step 850] val=0.387 clean=0.371 occ40=0.235 noise.15=0.314 heldout_loss=0.1224 rank=33.1
+ep=5 step=  850 loss=0.0643 lr=3.00e-04 ema=0.9962 ctx=44
+  [eval step 900] val=0.395 clean=0.373 occ40=0.245 noise.15=0.307 heldout_loss=0.1174 rank=34.1
+ep=5 step=  900 loss=0.0659 lr=3.00e-04 ema=0.9962 ctx=44
+  [eval step 950] val=0.396 clean=0.373 occ40=0.255 noise.15=0.312 heldout_loss=0.1127 rank=34.8
+ep=6 step=  950 loss=0.0651 lr=3.00e-04 ema=0.9963 ctx=44
+  [eval step 1000] val=0.403 clean=0.380 occ40=0.252 noise.15=0.308 heldout_loss=0.1115 rank=35.5
+ep=6 step= 1000 loss=0.0598 lr=3.00e-04 ema=0.9963 ctx=44
+  [eval step 1050] val=0.408 clean=0.380 occ40=0.247 noise.15=0.312 heldout_loss=0.1086 rank=36.1
+ep=6 step= 1050 loss=0.0648 lr=3.00e-04 ema=0.9963 ctx=29
+  [eval step 1100] val=0.398 clean=0.380 occ40=0.249 noise.15=0.310 heldout_loss=0.1064 rank=36.7
+ep=7 step= 1100 loss=0.0515 lr=3.00e-04 ema=0.9963 ctx=44
+  [eval step 1150] val=0.407 clean=0.383 occ40=0.243 noise.15=0.303 heldout_loss=0.1060 rank=37.8
+ep=7 step= 1150 loss=0.0535 lr=2.99e-04 ema=0.9963 ctx=44
+  [eval step 1200] val=0.401 clean=0.382 occ40=0.248 noise.15=0.298 heldout_loss=0.1011 rank=38.5
+ep=7 step= 1200 loss=0.0567 lr=2.99e-04 ema=0.9963 ctx=44
+  [eval step 1250] val=0.415 clean=0.382 occ40=0.249 noise.15=0.303 heldout_loss=0.0989 rank=39.3
+ep=8 step= 1250 loss=0.0489 lr=2.99e-04 ema=0.9963 ctx=54
+  [eval step 1300] val=0.411 clean=0.383 occ40=0.242 noise.15=0.303 heldout_loss=0.0973 rank=40.1
+ep=8 step= 1300 loss=0.0528 lr=2.99e-04 ema=0.9963 ctx=44
+  [eval step 1350] val=0.412 clean=0.381 occ40=0.237 noise.15=0.300 heldout_loss=0.0964 rank=41.3
+ep=8 step= 1350 loss=0.0504 lr=2.99e-04 ema=0.9964 ctx=44
+  [eval step 1400] val=0.414 clean=0.379 occ40=0.241 noise.15=0.312 heldout_loss=0.0946 rank=42.1
+ep=8 step= 1400 loss=0.0623 lr=2.98e-04 ema=0.9964 ctx=29
+  [eval step 1450] val=0.416 clean=0.382 occ40=0.252 noise.15=0.303 heldout_loss=0.0946 rank=43.2
+ep=9 step= 1450 loss=0.0516 lr=2.98e-04 ema=0.9964 ctx=44
+  [eval step 1500] val=0.415 clean=0.385 occ40=0.250 noise.15=0.300 heldout_loss=0.0944 rank=43.8
+ep=9 step= 1500 loss=0.0505 lr=2.98e-04 ema=0.9964 ctx=44
+  [eval step 1550] val=0.407 clean=0.380 occ40=0.257 noise.15=0.297 heldout_loss=0.0944 rank=44.3
+ep=9 step= 1550 loss=0.0513 lr=2.98e-04 ema=0.9964 ctx=54
+  [eval step 1600] val=0.414 clean=0.377 occ40=0.266 noise.15=0.303 heldout_loss=0.0961 rank=45.1
+ep=10 step= 1600 loss=0.0546 lr=2.97e-04 ema=0.9964 ctx=29
+  [eval step 1650] val=0.419 clean=0.386 occ40=0.264 noise.15=0.298 heldout_loss=0.0959 rank=45.5
+ep=10 step= 1650 loss=0.0476 lr=2.97e-04 ema=0.9964 ctx=44
+  [eval step 1700] val=0.412 clean=0.384 occ40=0.261 noise.15=0.300 heldout_loss=0.0956 rank=45.7
+ep=10 step= 1700 loss=0.0530 lr=2.97e-04 ema=0.9965 ctx=44
+  [eval step 1750] val=0.419 clean=0.382 occ40=0.262 noise.15=0.290 heldout_loss=0.0975 rank=46.0
+ep=11 step= 1750 loss=0.0524 lr=2.96e-04 ema=0.9965 ctx=44
+  [eval step 1800] val=0.410 clean=0.387 occ40=0.261 noise.15=0.291 heldout_loss=0.0975 rank=46.1
+ep=11 step= 1800 loss=0.0438 lr=2.96e-04 ema=0.9965 ctx=44
+  [eval step 1850] val=0.404 clean=0.386 occ40=0.259 noise.15=0.287 heldout_loss=0.0979 rank=47.0
+ep=11 step= 1850 loss=0.0481 lr=2.96e-04 ema=0.9965 ctx=44
+  [eval step 1900] val=0.414 clean=0.389 occ40=0.269 noise.15=0.296 heldout_loss=0.0980 rank=46.7
+ep=12 step= 1900 loss=0.0416 lr=2.95e-04 ema=0.9965 ctx=54
+  [eval step 1950] val=0.421 clean=0.396 occ40=0.267 noise.15=0.289 heldout_loss=0.0987 rank=47.4
+ep=12 step= 1950 loss=0.0478 lr=2.95e-04 ema=0.9965 ctx=44
+  [eval step 2000] val=0.416 clean=0.396 occ40=0.273 noise.15=0.292 heldout_loss=0.1009 rank=47.8
+ep=12 step= 2000 loss=0.0476 lr=2.94e-04 ema=0.9965 ctx=44
+  [eval step 2050] val=0.422 clean=0.392 occ40=0.264 noise.15=0.296 heldout_loss=0.0998 rank=47.9
+ep=13 step= 2050 loss=0.0476 lr=2.94e-04 ema=0.9965 ctx=44
+  [eval step 2100] val=0.420 clean=0.396 occ40=0.269 noise.15=0.294 heldout_loss=0.1022 rank=48.2
+ep=13 step= 2100 loss=0.0417 lr=2.93e-04 ema=0.9966 ctx=54
+  [eval step 2150] val=0.414 clean=0.397 occ40=0.271 noise.15=0.292 heldout_loss=0.1016 rank=48.2
+ep=13 step= 2150 loss=0.0439 lr=2.93e-04 ema=0.9966 ctx=44
+  [eval step 2200] val=0.415 clean=0.402 occ40=0.271 noise.15=0.294 heldout_loss=0.1018 rank=48.3
+ep=14 step= 2200 loss=0.0482 lr=2.92e-04 ema=0.9966 ctx=44
+  [eval step 2250] val=0.417 clean=0.401 occ40=0.278 noise.15=0.299 heldout_loss=0.1039 rank=49.0
+ep=14 step= 2250 loss=0.0503 lr=2.92e-04 ema=0.9966 ctx=44
+  [eval step 2300] val=0.416 clean=0.405 occ40=0.280 noise.15=0.301 heldout_loss=0.1047 rank=49.3
+ep=14 step= 2300 loss=0.0383 lr=2.91e-04 ema=0.9966 ctx=54
+  [eval step 2350] val=0.407 clean=0.400 occ40=0.271 noise.15=0.305 heldout_loss=0.1053 rank=49.5
+ep=15 step= 2350 loss=0.0490 lr=2.91e-04 ema=0.9966 ctx=44
+  [eval step 2400] val=0.415 clean=0.408 occ40=0.275 noise.15=0.299 heldout_loss=0.1058 rank=49.4
+ep=15 step= 2400 loss=0.0491 lr=2.90e-04 ema=0.9966 ctx=44
+  [eval step 2450] val=0.409 clean=0.403 occ40=0.280 noise.15=0.310 heldout_loss=0.1080 rank=50.3
+ep=15 step= 2450 loss=0.0505 lr=2.90e-04 ema=0.9967 ctx=29
+  [eval step 2500] val=0.418 clean=0.407 occ40=0.273 noise.15=0.301 heldout_loss=0.1096 rank=50.9
+ep=16 step= 2500 loss=0.0499 lr=2.89e-04 ema=0.9967 ctx=44
+  [eval step 2550] val=0.418 clean=0.418 occ40=0.276 noise.15=0.308 heldout_loss=0.1083 rank=50.5
+ep=16 step= 2550 loss=0.0481 lr=2.88e-04 ema=0.9967 ctx=44
+  [eval step 2600] val=0.412 clean=0.412 occ40=0.276 noise.15=0.306 heldout_loss=0.1100 rank=50.8
+ep=16 step= 2600 loss=0.0415 lr=2.88e-04 ema=0.9967 ctx=54
+  [eval step 2650] val=0.417 clean=0.408 occ40=0.280 noise.15=0.300 heldout_loss=0.1118 rank=51.3
+ep=16 step= 2650 loss=0.0584 lr=2.87e-04 ema=0.9967 ctx=29
+  [eval step 2700] val=0.420 clean=0.412 occ40=0.276 noise.15=0.302 heldout_loss=0.1120 rank=51.7
+ep=17 step= 2700 loss=0.0473 lr=2.86e-04 ema=0.9967 ctx=44
+  [eval step 2750] val=0.410 clean=0.413 occ40=0.271 noise.15=0.299 heldout_loss=0.1140 rank=52.1
+ep=17 step= 2750 loss=0.0624 lr=2.86e-04 ema=0.9967 ctx=29
+  [eval step 2800] val=0.410 clean=0.414 occ40=0.271 noise.15=0.308 heldout_loss=0.1136 rank=51.9
+ep=17 step= 2800 loss=0.0547 lr=2.85e-04 ema=0.9967 ctx=44
+  [eval step 2850] val=0.415 clean=0.423 occ40=0.276 noise.15=0.308 heldout_loss=0.1154 rank=52.3
+ep=18 step= 2850 loss=0.0508 lr=2.84e-04 ema=0.9968 ctx=44
+  [eval step 2900] val=0.414 clean=0.421 occ40=0.276 noise.15=0.312 heldout_loss=0.1174 rank=52.8
+ep=18 step= 2900 loss=0.0547 lr=2.83e-04 ema=0.9968 ctx=44
+  [eval step 2950] val=0.415 clean=0.418 occ40=0.272 noise.15=0.316 heldout_loss=0.1175 rank=52.6
+ep=18 step= 2950 loss=0.0496 lr=2.83e-04 ema=0.9968 ctx=44
+  [eval step 3000] val=0.405 clean=0.424 occ40=0.274 noise.15=0.314 heldout_loss=0.1194 rank=52.9
+ep=19 step= 3000 loss=0.0528 lr=2.82e-04 ema=0.9968 ctx=44
+  [eval step 3050] val=0.412 clean=0.418 occ40=0.272 noise.15=0.310 heldout_loss=0.1210 rank=53.3
+ep=19 step= 3050 loss=0.0517 lr=2.81e-04 ema=0.9968 ctx=44
+  [eval step 3100] val=0.406 clean=0.417 occ40=0.275 noise.15=0.306 heldout_loss=0.1231 rank=53.8
+ep=19 step= 3100 loss=0.0586 lr=2.80e-04 ema=0.9968 ctx=29
+  [eval step 3150] val=0.414 clean=0.427 occ40=0.271 noise.15=0.308 heldout_loss=0.1240 rank=54.1
+ep=20 step= 3150 loss=0.0523 lr=2.79e-04 ema=0.9968 ctx=44
+  [eval step 3200] val=0.411 clean=0.426 occ40=0.273 noise.15=0.315 heldout_loss=0.1254 rank=54.6
+ep=20 step= 3200 loss=0.0664 lr=2.79e-04 ema=0.9969 ctx=29
+  [eval step 3250] val=0.402 clean=0.422 occ40=0.275 noise.15=0.315 heldout_loss=0.1255 rank=54.1
+ep=20 step= 3250 loss=0.0556 lr=2.78e-04 ema=0.9969 ctx=44
+  [eval step 3300] val=0.413 clean=0.424 occ40=0.278 noise.15=0.311 heldout_loss=0.1276 rank=54.6
+ep=21 step= 3300 loss=0.0556 lr=2.77e-04 ema=0.9969 ctx=44
+  [eval step 3350] val=0.412 clean=0.428 occ40=0.268 noise.15=0.313 heldout_loss=0.1284 rank=54.9
+ep=21 step= 3350 loss=0.0566 lr=2.76e-04 ema=0.9969 ctx=44
+  [eval step 3400] val=0.403 clean=0.430 occ40=0.269 noise.15=0.322 heldout_loss=0.1286 rank=55.2
+ep=21 step= 3400 loss=0.0670 lr=2.75e-04 ema=0.9969 ctx=29
+  [eval step 3450] val=0.407 clean=0.424 occ40=0.269 noise.15=0.317 heldout_loss=0.1314 rank=54.8
+ep=22 step= 3450 loss=0.0531 lr=2.74e-04 ema=0.9969 ctx=44
+  [eval step 3500] val=0.410 clean=0.424 occ40=0.274 noise.15=0.313 heldout_loss=0.1318 rank=55.3
+ep=22 step= 3500 loss=0.0617 lr=2.73e-04 ema=0.9969 ctx=29
+  [eval step 3550] val=0.408 clean=0.427 occ40=0.274 noise.15=0.313 heldout_loss=0.1343 rank=55.5
+ep=22 step= 3550 loss=0.0615 lr=2.72e-04 ema=0.9969 ctx=44
+  [eval step 3600] val=0.408 clean=0.428 occ40=0.269 noise.15=0.321 heldout_loss=0.1336 rank=56.0
+ep=23 step= 3600 loss=0.0636 lr=2.71e-04 ema=0.9970 ctx=29
+  [eval step 3650] val=0.414 clean=0.423 occ40=0.272 noise.15=0.311 heldout_loss=0.1355 rank=56.3
+ep=23 step= 3650 loss=0.0702 lr=2.70e-04 ema=0.9970 ctx=29
+  [eval step 3700] val=0.412 clean=0.431 occ40=0.274 noise.15=0.315 heldout_loss=0.1371 rank=56.5
+ep=23 step= 3700 loss=0.0511 lr=2.69e-04 ema=0.9970 ctx=54
+  [eval step 3750] val=0.415 clean=0.426 occ40=0.275 noise.15=0.312 heldout_loss=0.1371 rank=57.0
+ep=24 step= 3750 loss=0.0553 lr=2.68e-04 ema=0.9970 ctx=44
+  [eval step 3800] val=0.417 clean=0.433 occ40=0.266 noise.15=0.317 heldout_loss=0.1392 rank=57.1
+ep=24 step= 3800 loss=0.0555 lr=2.67e-04 ema=0.9970 ctx=44
+  [eval step 3850] val=0.412 clean=0.423 occ40=0.271 noise.15=0.310 heldout_loss=0.1374 rank=57.0
+ep=24 step= 3850 loss=0.0550 lr=2.66e-04 ema=0.9970 ctx=44
+  [eval step 3900] val=0.414 clean=0.425 occ40=0.279 noise.15=0.313 heldout_loss=0.1403 rank=57.6
+ep=25 step= 3900 loss=0.0448 lr=2.65e-04 ema=0.9970 ctx=54
+  [eval step 3950] val=0.412 clean=0.423 occ40=0.280 noise.15=0.313 heldout_loss=0.1400 rank=57.6
+ep=25 step= 3950 loss=0.0461 lr=2.64e-04 ema=0.9971 ctx=54
+  [eval step 4000] val=0.419 clean=0.423 occ40=0.280 noise.15=0.311 heldout_loss=0.1414 rank=58.2
+ep=25 step= 4000 loss=0.0745 lr=2.63e-04 ema=0.9971 ctx=29
+  [eval step 4050] val=0.428 clean=0.418 occ40=0.282 noise.15=0.313 heldout_loss=0.1409 rank=57.9
+ep=25 step= 4050 loss=0.0499 lr=2.62e-04 ema=0.9971 ctx=54
+  [eval step 4100] val=0.428 clean=0.424 occ40=0.285 noise.15=0.311 heldout_loss=0.1429 rank=58.4
+ep=26 step= 4100 loss=0.0487 lr=2.61e-04 ema=0.9971 ctx=54
+  [eval step 4150] val=0.425 clean=0.426 occ40=0.284 noise.15=0.310 heldout_loss=0.1427 rank=58.5
+ep=26 step= 4150 loss=0.0592 lr=2.60e-04 ema=0.9971 ctx=44
+  [eval step 4200] val=0.422 clean=0.421 occ40=0.281 noise.15=0.312 heldout_loss=0.1427 rank=58.3
+ep=26 step= 4200 loss=0.0707 lr=2.59e-04 ema=0.9971 ctx=29
+  [eval step 4250] val=0.428 clean=0.419 occ40=0.280 noise.15=0.307 heldout_loss=0.1449 rank=58.8
+ep=27 step= 4250 loss=0.0493 lr=2.58e-04 ema=0.9971 ctx=54
+  [eval step 4300] val=0.425 clean=0.421 occ40=0.280 noise.15=0.302 heldout_loss=0.1457 rank=59.0
+ep=27 step= 4300 loss=0.0579 lr=2.56e-04 ema=0.9971 ctx=44
+  [eval step 4350] val=0.423 clean=0.420 occ40=0.282 noise.15=0.299 heldout_loss=0.1451 rank=59.1
+ep=27 step= 4350 loss=0.0485 lr=2.55e-04 ema=0.9972 ctx=54
+  [eval step 4400] val=0.416 clean=0.428 occ40=0.280 noise.15=0.303 heldout_loss=0.1469 rank=59.4
+ep=28 step= 4400 loss=0.0571 lr=2.54e-04 ema=0.9972 ctx=39
+  [eval step 4450] val=0.429 clean=0.426 occ40=0.274 noise.15=0.306 heldout_loss=0.1448 rank=59.0
+ep=28 step= 4450 loss=0.0756 lr=2.53e-04 ema=0.9972 ctx=29
+  [eval step 4500] val=0.422 clean=0.424 occ40=0.285 noise.15=0.308 heldout_loss=0.1459 rank=58.9
+ep=28 step= 4500 loss=0.0567 lr=2.52e-04 ema=0.9972 ctx=44
+  [eval step 4550] val=0.421 clean=0.430 occ40=0.286 noise.15=0.300 heldout_loss=0.1478 rank=59.5
+ep=29 step= 4550 loss=0.0623 lr=2.50e-04 ema=0.9972 ctx=44
+  [eval step 4600] val=0.426 clean=0.431 occ40=0.281 noise.15=0.301 heldout_loss=0.1497 rank=59.4
+ep=29 step= 4600 loss=0.0492 lr=2.49e-04 ema=0.9972 ctx=54
+  [eval step 4650] val=0.421 clean=0.425 occ40=0.288 noise.15=0.294 heldout_loss=0.1478 rank=59.6
+ep=29 step= 4650 loss=0.0515 lr=2.48e-04 ema=0.9972 ctx=54
+  [eval step 4700] val=0.426 clean=0.424 occ40=0.288 noise.15=0.292 heldout_loss=0.1484 rank=59.7
+ep=30 step= 4700 loss=0.0725 lr=2.47e-04 ema=0.9973 ctx=29
+  [eval step 4750] val=0.423 clean=0.433 occ40=0.281 noise.15=0.293 heldout_loss=0.1493 rank=59.9
+ep=30 step= 4750 loss=0.0583 lr=2.45e-04 ema=0.9973 ctx=44
+  [eval step 4800] val=0.424 clean=0.431 occ40=0.285 noise.15=0.294 heldout_loss=0.1496 rank=60.2
+ep=30 step= 4800 loss=0.0589 lr=2.44e-04 ema=0.9973 ctx=44
+  [eval step 4850] val=0.435 clean=0.431 occ40=0.289 noise.15=0.294 heldout_loss=0.1502 rank=60.4
+ep=31 step= 4850 loss=0.0561 lr=2.43e-04 ema=0.9973 ctx=44
+  [eval step 4900] val=0.424 clean=0.430 occ40=0.285 noise.15=0.289 heldout_loss=0.1503 rank=60.1
+ep=31 step= 4900 loss=0.0576 lr=2.41e-04 ema=0.9973 ctx=44
+  [eval step 4950] val=0.433 clean=0.436 occ40=0.280 noise.15=0.291 heldout_loss=0.1509 rank=60.5
+ep=31 step= 4950 loss=0.0735 lr=2.40e-04 ema=0.9973 ctx=29
+  [eval step 5000] val=0.430 clean=0.435 occ40=0.287 noise.15=0.285 heldout_loss=0.1517 rank=60.5
+ep=32 step= 5000 loss=0.0564 lr=2.39e-04 ema=0.9973 ctx=44
+  [eval step 5050] val=0.437 clean=0.436 occ40=0.278 noise.15=0.285 heldout_loss=0.1500 rank=60.6
+ep=32 step= 5050 loss=0.0617 lr=2.37e-04 ema=0.9973 ctx=44
+  [eval step 5100] val=0.440 clean=0.440 occ40=0.277 noise.15=0.293 heldout_loss=0.1524 rank=60.8
+ep=32 step= 5100 loss=0.0602 lr=2.36e-04 ema=0.9974 ctx=44
+  [eval step 5150] val=0.434 clean=0.440 occ40=0.276 noise.15=0.283 heldout_loss=0.1513 rank=60.9
+ep=33 step= 5150 loss=0.0594 lr=2.35e-04 ema=0.9974 ctx=44
+  [eval step 5200] val=0.436 clean=0.442 occ40=0.275 noise.15=0.282 heldout_loss=0.1518 rank=60.8
+ep=33 step= 5200 loss=0.0604 lr=2.33e-04 ema=0.9974 ctx=44
+  [eval step 5250] val=0.440 clean=0.438 occ40=0.273 noise.15=0.282 heldout_loss=0.1534 rank=61.5
+ep=33 step= 5250 loss=0.0563 lr=2.32e-04 ema=0.9974 ctx=44
+  [eval step 5300] val=0.440 clean=0.440 occ40=0.279 noise.15=0.285 heldout_loss=0.1524 rank=61.1
+ep=33 step= 5300 loss=0.0799 lr=2.31e-04 ema=0.9974 ctx=29
+  [eval step 5350] val=0.435 clean=0.442 occ40=0.278 noise.15=0.280 heldout_loss=0.1537 rank=61.3
+ep=34 step= 5350 loss=0.0485 lr=2.29e-04 ema=0.9974 ctx=54
+  [eval step 5400] val=0.436 clean=0.442 occ40=0.276 noise.15=0.282 heldout_loss=0.1539 rank=61.6
+ep=34 step= 5400 loss=0.0597 lr=2.28e-04 ema=0.9974 ctx=44
+  [eval step 5450] val=0.445 clean=0.448 occ40=0.269 noise.15=0.282 heldout_loss=0.1547 rank=61.7
+ep=34 step= 5450 loss=0.0611 lr=2.26e-04 ema=0.9975 ctx=44
+  [eval step 5500] val=0.443 clean=0.444 occ40=0.271 noise.15=0.275 heldout_loss=0.1558 rank=61.7
+ep=35 step= 5500 loss=0.0769 lr=2.25e-04 ema=0.9975 ctx=29
+  [eval step 5550] val=0.436 clean=0.454 occ40=0.273 noise.15=0.282 heldout_loss=0.1540 rank=61.6
+ep=35 step= 5550 loss=0.0481 lr=2.24e-04 ema=0.9975 ctx=54
+  [eval step 5600] val=0.445 clean=0.452 occ40=0.269 noise.15=0.282 heldout_loss=0.1534 rank=61.6
+ep=35 step= 5600 loss=0.0564 lr=2.22e-04 ema=0.9975 ctx=44
+  [eval step 5650] val=0.435 clean=0.444 occ40=0.270 noise.15=0.285 heldout_loss=0.1544 rank=61.8
+ep=36 step= 5650 loss=0.0597 lr=2.21e-04 ema=0.9975 ctx=44
+  [eval step 5700] val=0.444 clean=0.449 occ40=0.272 noise.15=0.287 heldout_loss=0.1547 rank=61.8
+ep=36 step= 5700 loss=0.0546 lr=2.19e-04 ema=0.9975 ctx=44
+  [eval step 5750] val=0.454 clean=0.450 occ40=0.269 noise.15=0.278 heldout_loss=0.1543 rank=62.0
+ep=36 step= 5750 loss=0.0565 lr=2.18e-04 ema=0.9975 ctx=44
+  [eval step 5800] val=0.442 clean=0.449 occ40=0.272 noise.15=0.292 heldout_loss=0.1536 rank=62.0
+ep=37 step= 5800 loss=0.0568 lr=2.16e-04 ema=0.9975 ctx=44
+  [eval step 5850] val=0.452 clean=0.452 occ40=0.275 noise.15=0.285 heldout_loss=0.1551 rank=62.1
+ep=37 step= 5850 loss=0.0583 lr=2.15e-04 ema=0.9976 ctx=44
+  [eval step 5900] val=0.451 clean=0.446 occ40=0.268 noise.15=0.287 heldout_loss=0.1534 rank=62.0
+ep=37 step= 5900 loss=0.0559 lr=2.13e-04 ema=0.9976 ctx=39
+  [eval step 5950] val=0.455 clean=0.451 occ40=0.268 noise.15=0.282 heldout_loss=0.1550 rank=62.2
+ep=38 step= 5950 loss=0.0590 lr=2.12e-04 ema=0.9976 ctx=44
+  [eval step 6000] val=0.444 clean=0.455 occ40=0.273 noise.15=0.282 heldout_loss=0.1558 rank=62.3
+ep=38 step= 6000 loss=0.0669 lr=2.10e-04 ema=0.9976 ctx=44
+  [eval step 6050] val=0.449 clean=0.454 occ40=0.261 noise.15=0.282 heldout_loss=0.1547 rank=62.3
+ep=38 step= 6050 loss=0.0617 lr=2.09e-04 ema=0.9976 ctx=44
+  [eval step 6100] val=0.445 clean=0.454 occ40=0.275 noise.15=0.284 heldout_loss=0.1534 rank=62.3
+ep=39 step= 6100 loss=0.0446 lr=2.07e-04 ema=0.9976 ctx=54
+  [eval step 6150] val=0.447 clean=0.458 occ40=0.268 noise.15=0.281 heldout_loss=0.1547 rank=62.5
+ep=39 step= 6150 loss=0.0784 lr=2.06e-04 ema=0.9976 ctx=29
+  [eval step 6200] val=0.447 clean=0.452 occ40=0.265 noise.15=0.280 heldout_loss=0.1546 rank=62.5
+ep=39 step= 6200 loss=0.0604 lr=2.04e-04 ema=0.9977 ctx=44
+  [eval step 6250] val=0.452 clean=0.451 occ40=0.260 noise.15=0.287 heldout_loss=0.1553 rank=62.7
+ep=40 step= 6250 loss=0.0592 lr=2.03e-04 ema=0.9977 ctx=44
+  [eval step 6300] val=0.447 clean=0.451 occ40=0.271 noise.15=0.287 heldout_loss=0.1532 rank=62.7
+ep=40 step= 6300 loss=0.0454 lr=2.01e-04 ema=0.9977 ctx=54
+  [eval step 6350] val=0.446 clean=0.454 occ40=0.269 noise.15=0.290 heldout_loss=0.1537 rank=62.7
+ep=40 step= 6350 loss=0.0612 lr=1.99e-04 ema=0.9977 ctx=44
+  [eval step 6400] val=0.445 clean=0.451 occ40=0.266 noise.15=0.280 heldout_loss=0.1542 rank=62.8
+ep=41 step= 6400 loss=0.0593 lr=1.98e-04 ema=0.9977 ctx=44
+  [eval step 6450] val=0.444 clean=0.456 occ40=0.265 noise.15=0.282 heldout_loss=0.1531 rank=63.1
+ep=41 step= 6450 loss=0.0580 lr=1.96e-04 ema=0.9977 ctx=44
+  [eval step 6500] val=0.442 clean=0.452 occ40=0.262 noise.15=0.278 heldout_loss=0.1543 rank=62.8
+ep=41 step= 6500 loss=0.0585 lr=1.95e-04 ema=0.9977 ctx=44
+  [eval step 6550] val=0.452 clean=0.454 occ40=0.269 noise.15=0.268 heldout_loss=0.1546 rank=63.1
+ep=41 step= 6550 loss=0.0569 lr=1.93e-04 ema=0.9977 ctx=44
+  [eval step 6600] val=0.450 clean=0.452 occ40=0.269 noise.15=0.275 heldout_loss=0.1530 rank=63.1
+ep=42 step= 6600 loss=0.0601 lr=1.92e-04 ema=0.9978 ctx=44
+  [eval step 6650] val=0.448 clean=0.452 occ40=0.271 noise.15=0.278 heldout_loss=0.1536 rank=63.3
+ep=42 step= 6650 loss=0.0617 lr=1.90e-04 ema=0.9978 ctx=44
+  [eval step 6700] val=0.453 clean=0.455 occ40=0.271 noise.15=0.275 heldout_loss=0.1534 rank=63.1
+ep=42 step= 6700 loss=0.0445 lr=1.88e-04 ema=0.9978 ctx=54
+  [eval step 6750] val=0.450 clean=0.457 occ40=0.269 noise.15=0.278 heldout_loss=0.1542 rank=63.5
+ep=43 step= 6750 loss=0.0601 lr=1.87e-04 ema=0.9978 ctx=44
+  [eval step 6800] val=0.449 clean=0.454 occ40=0.264 noise.15=0.271 heldout_loss=0.1529 rank=63.5
+ep=43 step= 6800 loss=0.0447 lr=1.85e-04 ema=0.9978 ctx=54
+  [eval step 6850] val=0.458 clean=0.456 occ40=0.275 noise.15=0.271 heldout_loss=0.1537 rank=63.4
+ep=43 step= 6850 loss=0.0595 lr=1.84e-04 ema=0.9978 ctx=44
+  [eval step 6900] val=0.453 clean=0.453 occ40=0.271 noise.15=0.270 heldout_loss=0.1530 rank=63.7
+ep=44 step= 6900 loss=0.0581 lr=1.82e-04 ema=0.9978 ctx=44
+  [eval step 6950] val=0.458 clean=0.457 occ40=0.261 noise.15=0.270 heldout_loss=0.1513 rank=63.5
+ep=44 step= 6950 loss=0.0564 lr=1.80e-04 ema=0.9979 ctx=44
+  [eval step 7000] val=0.455 clean=0.455 occ40=0.264 noise.15=0.272 heldout_loss=0.1525 rank=63.5
+ep=44 step= 7000 loss=0.0532 lr=1.79e-04 ema=0.9979 ctx=44
+  [eval step 7050] val=0.454 clean=0.457 occ40=0.269 noise.15=0.273 heldout_loss=0.1533 rank=63.6
+ep=45 step= 7050 loss=0.0587 lr=1.77e-04 ema=0.9979 ctx=44
+  [eval step 7100] val=0.460 clean=0.458 occ40=0.266 noise.15=0.266 heldout_loss=0.1521 rank=63.5
+ep=45 step= 7100 loss=0.0551 lr=1.76e-04 ema=0.9979 ctx=44
+  [eval step 7150] val=0.454 clean=0.458 occ40=0.265 noise.15=0.273 heldout_loss=0.1517 rank=63.9
+ep=45 step= 7150 loss=0.0560 lr=1.74e-04 ema=0.9979 ctx=44
+  [eval step 7200] val=0.451 clean=0.451 occ40=0.264 noise.15=0.273 heldout_loss=0.1507 rank=64.0
+ep=46 step= 7200 loss=0.0447 lr=1.72e-04 ema=0.9979 ctx=54
+  [eval step 7250] val=0.456 clean=0.457 occ40=0.265 noise.15=0.276 heldout_loss=0.1515 rank=63.8
+ep=46 step= 7250 loss=0.0728 lr=1.71e-04 ema=0.9979 ctx=29
+  [eval step 7300] val=0.452 clean=0.454 occ40=0.268 noise.15=0.276 heldout_loss=0.1526 rank=64.0
+ep=46 step= 7300 loss=0.0553 lr=1.69e-04 ema=0.9979 ctx=44
+  [eval step 7350] val=0.456 clean=0.457 occ40=0.268 noise.15=0.265 heldout_loss=0.1512 rank=63.9
+ep=47 step= 7350 loss=0.0580 lr=1.67e-04 ema=0.9980 ctx=44
+  [eval step 7400] val=0.457 clean=0.458 occ40=0.266 noise.15=0.269 heldout_loss=0.1504 rank=63.9
+ep=47 step= 7400 loss=0.0737 lr=1.66e-04 ema=0.9980 ctx=29
+  [eval step 7450] val=0.459 clean=0.454 occ40=0.269 noise.15=0.272 heldout_loss=0.1480 rank=63.6
+ep=47 step= 7450 loss=0.0591 lr=1.64e-04 ema=0.9980 ctx=44
+  [eval step 7500] val=0.465 clean=0.454 occ40=0.268 noise.15=0.264 heldout_loss=0.1504 rank=64.2
+ep=48 step= 7500 loss=0.0535 lr=1.62e-04 ema=0.9980 ctx=44
+  [eval step 7550] val=0.461 clean=0.458 occ40=0.265 noise.15=0.264 heldout_loss=0.1479 rank=64.1
+ep=48 step= 7550 loss=0.0556 lr=1.61e-04 ema=0.9980 ctx=44
+  [eval step 7600] val=0.461 clean=0.458 occ40=0.272 noise.15=0.267 heldout_loss=0.1500 rank=64.4
+ep=48 step= 7600 loss=0.0542 lr=1.59e-04 ema=0.9980 ctx=44
+  [eval step 7650] val=0.458 clean=0.461 occ40=0.269 noise.15=0.262 heldout_loss=0.1481 rank=64.1
+ep=49 step= 7650 loss=0.0580 lr=1.57e-04 ema=0.9980 ctx=44
+  [eval step 7700] val=0.459 clean=0.456 occ40=0.264 noise.15=0.269 heldout_loss=0.1490 rank=64.1
+ep=49 step= 7700 loss=0.0535 lr=1.56e-04 ema=0.9981 ctx=39
+  [eval step 7750] val=0.461 clean=0.456 occ40=0.269 noise.15=0.258 heldout_loss=0.1474 rank=64.1
+ep=49 step= 7750 loss=0.0565 lr=1.54e-04 ema=0.9981 ctx=44
+  [eval step 7800] val=0.463 clean=0.462 occ40=0.266 noise.15=0.258 heldout_loss=0.1507 rank=64.4
+ep=50 step= 7800 loss=0.0544 lr=1.52e-04 ema=0.9981 ctx=44
+  [eval step 7850] val=0.461 clean=0.458 occ40=0.266 noise.15=0.264 heldout_loss=0.1486 rank=64.3
+ep=50 step= 7850 loss=0.0737 lr=1.51e-04 ema=0.9981 ctx=29
+  [eval step 7900] val=0.465 clean=0.458 occ40=0.271 noise.15=0.262 heldout_loss=0.1495 rank=64.5
+ep=50 step= 7900 loss=0.0539 lr=1.49e-04 ema=0.9981 ctx=44
+  [eval step 7950] val=0.462 clean=0.461 occ40=0.263 noise.15=0.259 heldout_loss=0.1484 rank=64.3
+ep=50 step= 7950 loss=0.0558 lr=1.48e-04 ema=0.9981 ctx=44
+  [eval step 8000] val=0.465 clean=0.459 occ40=0.260 noise.15=0.259 heldout_loss=0.1475 rank=64.2
+ep=51 step= 8000 loss=0.0699 lr=1.46e-04 ema=0.9981 ctx=29
+  [eval step 8050] val=0.468 clean=0.461 occ40=0.270 noise.15=0.266 heldout_loss=0.1477 rank=64.5
+ep=51 step= 8050 loss=0.0555 lr=1.44e-04 ema=0.9981 ctx=44
+  [eval step 8100] val=0.463 clean=0.457 occ40=0.269 noise.15=0.258 heldout_loss=0.1485 rank=64.2
+ep=51 step= 8100 loss=0.0544 lr=1.43e-04 ema=0.9982 ctx=44
+  [eval step 8150] val=0.460 clean=0.455 occ40=0.269 noise.15=0.269 heldout_loss=0.1472 rank=64.4
+ep=52 step= 8150 loss=0.0548 lr=1.41e-04 ema=0.9982 ctx=44
+  [eval step 8200] val=0.464 clean=0.456 occ40=0.264 noise.15=0.259 heldout_loss=0.1477 rank=64.4
+ep=52 step= 8200 loss=0.0521 lr=1.39e-04 ema=0.9982 ctx=44
+  [eval step 8250] val=0.468 clean=0.456 occ40=0.266 noise.15=0.262 heldout_loss=0.1475 rank=64.8
+ep=52 step= 8250 loss=0.0702 lr=1.38e-04 ema=0.9982 ctx=29
+  [eval step 8300] val=0.466 clean=0.454 occ40=0.266 noise.15=0.263 heldout_loss=0.1464 rank=64.4
+ep=53 step= 8300 loss=0.0709 lr=1.36e-04 ema=0.9982 ctx=34
+  [eval step 8350] val=0.467 clean=0.455 occ40=0.269 noise.15=0.261 heldout_loss=0.1464 rank=64.4
+ep=53 step= 8350 loss=0.0488 lr=1.34e-04 ema=0.9982 ctx=44
+  [eval step 8400] val=0.473 clean=0.454 occ40=0.271 noise.15=0.262 heldout_loss=0.1446 rank=64.2
+ep=53 step= 8400 loss=0.0537 lr=1.33e-04 ema=0.9982 ctx=44
+  [eval step 8450] val=0.464 clean=0.454 occ40=0.267 noise.15=0.260 heldout_loss=0.1451 rank=64.3
+ep=54 step= 8450 loss=0.0712 lr=1.31e-04 ema=0.9983 ctx=29
+  [eval step 8500] val=0.461 clean=0.452 occ40=0.271 noise.15=0.252 heldout_loss=0.1452 rank=64.7
+ep=54 step= 8500 loss=0.0547 lr=1.29e-04 ema=0.9983 ctx=44
+  [eval step 8550] val=0.466 clean=0.451 occ40=0.279 noise.15=0.257 heldout_loss=0.1455 rank=64.5
+ep=54 step= 8550 loss=0.0558 lr=1.28e-04 ema=0.9983 ctx=44
+  [eval step 8600] val=0.461 clean=0.453 occ40=0.271 noise.15=0.253 heldout_loss=0.1450 rank=64.5
+ep=55 step= 8600 loss=0.0550 lr=1.26e-04 ema=0.9983 ctx=39
+  [eval step 8650] val=0.471 clean=0.449 occ40=0.271 noise.15=0.257 heldout_loss=0.1457 rank=64.6
+ep=55 step= 8650 loss=0.0521 lr=1.24e-04 ema=0.9983 ctx=44
+  [eval step 8700] val=0.461 clean=0.454 occ40=0.271 noise.15=0.257 heldout_loss=0.1446 rank=64.5
+ep=55 step= 8700 loss=0.0529 lr=1.23e-04 ema=0.9983 ctx=44
+  [eval step 8750] val=0.460 clean=0.457 occ40=0.271 noise.15=0.252 heldout_loss=0.1444 rank=64.6
+ep=56 step= 8750 loss=0.0542 lr=1.21e-04 ema=0.9983 ctx=44
+  [eval step 8800] val=0.466 clean=0.453 occ40=0.271 noise.15=0.256 heldout_loss=0.1451 rank=64.7
+ep=56 step= 8800 loss=0.0504 lr=1.20e-04 ema=0.9983 ctx=44
+  [eval step 8850] val=0.463 clean=0.454 occ40=0.268 noise.15=0.257 heldout_loss=0.1446 rank=64.7
+ep=56 step= 8850 loss=0.0557 lr=1.18e-04 ema=0.9984 ctx=39
+  [eval step 8900] val=0.458 clean=0.456 occ40=0.270 noise.15=0.257 heldout_loss=0.1443 rank=64.7
+ep=57 step= 8900 loss=0.0527 lr=1.16e-04 ema=0.9984 ctx=44
+  [eval step 8950] val=0.461 clean=0.453 occ40=0.269 noise.15=0.261 heldout_loss=0.1440 rank=64.7
+ep=57 step= 8950 loss=0.0548 lr=1.15e-04 ema=0.9984 ctx=44
+  [eval step 9000] val=0.462 clean=0.458 occ40=0.269 noise.15=0.261 heldout_loss=0.1431 rank=64.6
+ep=57 step= 9000 loss=0.0518 lr=1.13e-04 ema=0.9984 ctx=44
+  [eval step 9050] val=0.459 clean=0.451 occ40=0.269 noise.15=0.256 heldout_loss=0.1419 rank=64.6
+ep=58 step= 9050 loss=0.0504 lr=1.12e-04 ema=0.9984 ctx=44
+  [eval step 9100] val=0.460 clean=0.456 occ40=0.272 noise.15=0.259 heldout_loss=0.1426 rank=64.6
+ep=58 step= 9100 loss=0.0404 lr=1.10e-04 ema=0.9984 ctx=54
+  [eval step 9150] val=0.464 clean=0.453 occ40=0.268 noise.15=0.259 heldout_loss=0.1428 rank=64.5
+ep=58 step= 9150 loss=0.0502 lr=1.08e-04 ema=0.9984 ctx=44
+  [eval step 9200] val=0.459 clean=0.453 occ40=0.272 noise.15=0.259 heldout_loss=0.1423 rank=64.9
+ep=58 step= 9200 loss=0.0539 lr=1.07e-04 ema=0.9985 ctx=44
+  [eval step 9250] val=0.463 clean=0.454 occ40=0.266 noise.15=0.253 heldout_loss=0.1422 rank=64.7
+ep=59 step= 9250 loss=0.0696 lr=1.05e-04 ema=0.9985 ctx=29
+  [eval step 9300] val=0.463 clean=0.454 occ40=0.271 noise.15=0.259 heldout_loss=0.1412 rank=64.8
+ep=59 step= 9300 loss=0.0511 lr=1.04e-04 ema=0.9985 ctx=44
+  [eval step 9350] val=0.461 clean=0.458 occ40=0.271 noise.15=0.259 heldout_loss=0.1430 rank=64.8
+ep=59 step= 9350 loss=0.0526 lr=1.02e-04 ema=0.9985 ctx=44
+  [eval step 9400] val=0.461 clean=0.453 occ40=0.269 noise.15=0.257 heldout_loss=0.1435 rank=65.0
+ep=60 step= 9400 loss=0.0510 lr=1.01e-04 ema=0.9985 ctx=44
+  [eval step 9450] val=0.470 clean=0.457 occ40=0.267 noise.15=0.257 heldout_loss=0.1396 rank=64.7
+ep=60 step= 9450 loss=0.0706 lr=9.90e-05 ema=0.9985 ctx=29
+  [eval step 9500] val=0.462 clean=0.451 occ40=0.273 noise.15=0.266 heldout_loss=0.1409 rank=65.0
+ep=60 step= 9500 loss=0.0495 lr=9.74e-05 ema=0.9985 ctx=44
+  [eval step 9550] val=0.461 clean=0.446 occ40=0.268 noise.15=0.257 heldout_loss=0.1405 rank=65.1
+ep=61 step= 9550 loss=0.0495 lr=9.59e-05 ema=0.9985 ctx=44
+  [eval step 9600] val=0.459 clean=0.454 occ40=0.271 noise.15=0.261 heldout_loss=0.1406 rank=65.1
+ep=61 step= 9600 loss=0.0531 lr=9.43e-05 ema=0.9986 ctx=44
+  [eval step 9650] val=0.458 clean=0.457 occ40=0.271 noise.15=0.257 heldout_loss=0.1401 rank=65.0
+ep=61 step= 9650 loss=0.0514 lr=9.28e-05 ema=0.9986 ctx=44
+  [eval step 9700] val=0.464 clean=0.454 occ40=0.273 noise.15=0.257 heldout_loss=0.1386 rank=64.8
+ep=62 step= 9700 loss=0.0511 lr=9.13e-05 ema=0.9986 ctx=44
+  [eval step 9750] val=0.460 clean=0.461 occ40=0.271 noise.15=0.250 heldout_loss=0.1398 rank=64.9
+ep=62 step= 9750 loss=0.0505 lr=8.97e-05 ema=0.9986 ctx=44
+  [eval step 9800] val=0.463 clean=0.451 occ40=0.268 noise.15=0.252 heldout_loss=0.1390 rank=65.0
+ep=62 step= 9800 loss=0.0509 lr=8.82e-05 ema=0.9986 ctx=44
+  [eval step 9850] val=0.454 clean=0.452 occ40=0.269 noise.15=0.254 heldout_loss=0.1392 rank=65.1
+ep=63 step= 9850 loss=0.0524 lr=8.67e-05 ema=0.9986 ctx=44
+  [eval step 9900] val=0.457 clean=0.458 occ40=0.271 noise.15=0.249 heldout_loss=0.1394 rank=65.2
+ep=63 step= 9900 loss=0.0487 lr=8.52e-05 ema=0.9986 ctx=44
+  [eval step 9950] val=0.454 clean=0.453 occ40=0.266 noise.15=0.255 heldout_loss=0.1392 rank=65.2
+ep=63 step= 9950 loss=0.0401 lr=8.37e-05 ema=0.9987 ctx=54
+  [eval step 10000] val=0.461 clean=0.452 occ40=0.271 noise.15=0.251 heldout_loss=0.1385 rank=65.1
+ep=64 step=10000 loss=0.0498 lr=8.23e-05 ema=0.9987 ctx=44
+  [eval step 10050] val=0.457 clean=0.456 occ40=0.269 noise.15=0.252 heldout_loss=0.1392 rank=65.2
+ep=64 step=10050 loss=0.0474 lr=8.08e-05 ema=0.9987 ctx=44
+  [eval step 10100] val=0.465 clean=0.457 occ40=0.270 noise.15=0.253 heldout_loss=0.1382 rank=65.0
+ep=64 step=10100 loss=0.0389 lr=7.93e-05 ema=0.9987 ctx=54
+  [eval step 10150] val=0.458 clean=0.454 occ40=0.268 noise.15=0.252 heldout_loss=0.1377 rank=65.2
+ep=65 step=10150 loss=0.0521 lr=7.79e-05 ema=0.9987 ctx=44
+  [eval step 10200] val=0.463 clean=0.456 occ40=0.271 noise.15=0.251 heldout_loss=0.1369 rank=65.2
+ep=65 step=10200 loss=0.0530 lr=7.64e-05 ema=0.9987 ctx=39
+  [eval step 10250] val=0.460 clean=0.461 occ40=0.273 noise.15=0.252 heldout_loss=0.1374 rank=65.3
+ep=65 step=10250 loss=0.0512 lr=7.50e-05 ema=0.9987 ctx=44
+  [eval step 10300] val=0.466 clean=0.452 occ40=0.271 noise.15=0.256 heldout_loss=0.1376 rank=65.3
+ep=66 step=10300 loss=0.0485 lr=7.36e-05 ema=0.9987 ctx=44
+  [eval step 10350] val=0.466 clean=0.460 occ40=0.271 noise.15=0.250 heldout_loss=0.1371 rank=65.3
+ep=66 step=10350 loss=0.0480 lr=7.22e-05 ema=0.9988 ctx=44
+  [eval step 10400] val=0.468 clean=0.460 occ40=0.265 noise.15=0.250 heldout_loss=0.1368 rank=65.3
+ep=66 step=10400 loss=0.0370 lr=7.07e-05 ema=0.9988 ctx=54
+  [eval step 10450] val=0.465 clean=0.461 occ40=0.268 noise.15=0.250 heldout_loss=0.1369 rank=65.2
+ep=66 step=10450 loss=0.0685 lr=6.93e-05 ema=0.9988 ctx=29
+  [eval step 10500] val=0.462 clean=0.460 occ40=0.269 noise.15=0.249 heldout_loss=0.1362 rank=65.3
+ep=67 step=10500 loss=0.0655 lr=6.80e-05 ema=0.9988 ctx=29
+  [eval step 10550] val=0.466 clean=0.456 occ40=0.266 noise.15=0.255 heldout_loss=0.1358 rank=65.2
+ep=67 step=10550 loss=0.0492 lr=6.66e-05 ema=0.9988 ctx=44
+  [eval step 10600] val=0.462 clean=0.460 occ40=0.267 noise.15=0.255 heldout_loss=0.1359 rank=65.3
+ep=67 step=10600 loss=0.0630 lr=6.52e-05 ema=0.9988 ctx=29
+  [eval step 10650] val=0.458 clean=0.458 occ40=0.269 noise.15=0.250 heldout_loss=0.1344 rank=65.2
+ep=68 step=10650 loss=0.0501 lr=6.39e-05 ema=0.9988 ctx=44
+  [eval step 10700] val=0.457 clean=0.461 occ40=0.266 noise.15=0.247 heldout_loss=0.1350 rank=65.3
+ep=68 step=10700 loss=0.0477 lr=6.25e-05 ema=0.9989 ctx=44
+  [eval step 10750] val=0.460 clean=0.462 occ40=0.269 noise.15=0.246 heldout_loss=0.1337 rank=65.3
+ep=68 step=10750 loss=0.0499 lr=6.12e-05 ema=0.9989 ctx=44
+  [eval step 10800] val=0.460 clean=0.458 occ40=0.269 noise.15=0.252 heldout_loss=0.1332 rank=65.3
+ep=69 step=10800 loss=0.0466 lr=5.98e-05 ema=0.9989 ctx=44
+  [eval step 10850] val=0.467 clean=0.463 occ40=0.269 noise.15=0.250 heldout_loss=0.1339 rank=65.3
+ep=69 step=10850 loss=0.0665 lr=5.85e-05 ema=0.9989 ctx=29
+  [eval step 10900] val=0.461 clean=0.461 occ40=0.271 noise.15=0.247 heldout_loss=0.1327 rank=65.2
+ep=69 step=10900 loss=0.0489 lr=5.72e-05 ema=0.9989 ctx=44
+  [eval step 10950] val=0.462 clean=0.465 occ40=0.269 noise.15=0.257 heldout_loss=0.1338 rank=65.5
+ep=70 step=10950 loss=0.0494 lr=5.59e-05 ema=0.9989 ctx=44
+  [eval step 11000] val=0.461 clean=0.465 occ40=0.266 noise.15=0.248 heldout_loss=0.1336 rank=65.4
+ep=70 step=11000 loss=0.0477 lr=5.46e-05 ema=0.9989 ctx=44
+  [eval step 11050] val=0.463 clean=0.460 occ40=0.270 noise.15=0.250 heldout_loss=0.1329 rank=65.4
+ep=70 step=11050 loss=0.0399 lr=5.34e-05 ema=0.9989 ctx=54
+  [eval step 11100] val=0.455 clean=0.462 occ40=0.266 noise.15=0.250 heldout_loss=0.1326 rank=65.4
+ep=71 step=11100 loss=0.0460 lr=5.21e-05 ema=0.9990 ctx=44
+  [eval step 11150] val=0.462 clean=0.464 occ40=0.273 noise.15=0.250 heldout_loss=0.1331 rank=65.5
+ep=71 step=11150 loss=0.0458 lr=5.09e-05 ema=0.9990 ctx=44
+  [eval step 11200] val=0.465 clean=0.465 occ40=0.273 noise.15=0.252 heldout_loss=0.1324 rank=65.4
+ep=71 step=11200 loss=0.0381 lr=4.96e-05 ema=0.9990 ctx=54
+  [eval step 11250] val=0.459 clean=0.465 occ40=0.271 noise.15=0.247 heldout_loss=0.1320 rank=65.5
+ep=72 step=11250 loss=0.0461 lr=4.84e-05 ema=0.9990 ctx=44
+  [eval step 11300] val=0.461 clean=0.468 occ40=0.275 noise.15=0.245 heldout_loss=0.1323 rank=65.5
+ep=72 step=11300 loss=0.0473 lr=4.72e-05 ema=0.9990 ctx=44
+  [eval step 11350] val=0.457 clean=0.461 occ40=0.273 noise.15=0.244 heldout_loss=0.1314 rank=65.4
+ep=72 step=11350 loss=0.0496 lr=4.60e-05 ema=0.9990 ctx=44
+  [eval step 11400] val=0.452 clean=0.463 occ40=0.269 noise.15=0.250 heldout_loss=0.1313 rank=65.4
+ep=73 step=11400 loss=0.0450 lr=4.48e-05 ema=0.9990 ctx=44
+  [eval step 11450] val=0.454 clean=0.464 occ40=0.272 noise.15=0.244 heldout_loss=0.1316 rank=65.5
+ep=73 step=11450 loss=0.0643 lr=4.36e-05 ema=0.9991 ctx=29
+  [eval step 11500] val=0.454 clean=0.467 occ40=0.273 noise.15=0.249 heldout_loss=0.1318 rank=65.6
+ep=73 step=11500 loss=0.0477 lr=4.25e-05 ema=0.9991 ctx=44
+  [eval step 11550] val=0.456 clean=0.468 occ40=0.275 noise.15=0.244 heldout_loss=0.1311 rank=65.6
+ep=74 step=11550 loss=0.0471 lr=4.13e-05 ema=0.9991 ctx=44
+  [eval step 11600] val=0.462 clean=0.468 occ40=0.274 noise.15=0.242 heldout_loss=0.1305 rank=65.6
+ep=74 step=11600 loss=0.0462 lr=4.02e-05 ema=0.9991 ctx=44
+  [eval step 11650] val=0.458 clean=0.468 occ40=0.275 noise.15=0.244 heldout_loss=0.1297 rank=65.4
+ep=74 step=11650 loss=0.0483 lr=3.91e-05 ema=0.9991 ctx=44
+  [eval step 11700] val=0.457 clean=0.467 occ40=0.271 noise.15=0.238 heldout_loss=0.1298 rank=65.5
+ep=75 step=11700 loss=0.0632 lr=3.80e-05 ema=0.9991 ctx=29
+  [eval step 11750] val=0.449 clean=0.467 occ40=0.271 noise.15=0.243 heldout_loss=0.1293 rank=65.5
+ep=75 step=11750 loss=0.0474 lr=3.69e-05 ema=0.9991 ctx=44
+  [eval step 11800] val=0.453 clean=0.467 occ40=0.273 noise.15=0.241 heldout_loss=0.1288 rank=65.6
+ep=75 step=11800 loss=0.0480 lr=3.58e-05 ema=0.9991 ctx=44
+  [eval step 11850] val=0.461 clean=0.469 occ40=0.273 noise.15=0.237 heldout_loss=0.1293 rank=65.7
+ep=75 step=11850 loss=0.0459 lr=3.47e-05 ema=0.9992 ctx=44
+  [eval step 11900] val=0.458 clean=0.471 occ40=0.273 noise.15=0.236 heldout_loss=0.1287 rank=65.5
+ep=76 step=11900 loss=0.0450 lr=3.37e-05 ema=0.9992 ctx=44
+  [eval step 11950] val=0.458 clean=0.470 occ40=0.271 noise.15=0.236 heldout_loss=0.1283 rank=65.7
+ep=76 step=11950 loss=0.0448 lr=3.27e-05 ema=0.9992 ctx=44
+  [eval step 12000] val=0.463 clean=0.465 occ40=0.275 noise.15=0.235 heldout_loss=0.1282 rank=65.6
+ep=76 step=12000 loss=0.0468 lr=3.16e-05 ema=0.9992 ctx=44
+  [eval step 12050] val=0.456 clean=0.469 occ40=0.271 noise.15=0.237 heldout_loss=0.1285 rank=65.7
+ep=77 step=12050 loss=0.0633 lr=3.06e-05 ema=0.9992 ctx=29
+  [eval step 12100] val=0.462 clean=0.468 occ40=0.269 noise.15=0.238 heldout_loss=0.1285 rank=65.8
+ep=77 step=12100 loss=0.0466 lr=2.96e-05 ema=0.9992 ctx=44
+  [eval step 12150] val=0.458 clean=0.468 occ40=0.272 noise.15=0.240 heldout_loss=0.1281 rank=65.8
+ep=77 step=12150 loss=0.0444 lr=2.86e-05 ema=0.9992 ctx=44
+  [eval step 12200] val=0.460 clean=0.465 occ40=0.275 noise.15=0.236 heldout_loss=0.1277 rank=65.6
+ep=78 step=12200 loss=0.0460 lr=2.77e-05 ema=0.9993 ctx=44
+  [eval step 12250] val=0.459 clean=0.465 occ40=0.271 noise.15=0.237 heldout_loss=0.1270 rank=65.6
+ep=78 step=12250 loss=0.0435 lr=2.67e-05 ema=0.9993 ctx=44
+  [eval step 12300] val=0.460 clean=0.466 occ40=0.272 noise.15=0.236 heldout_loss=0.1271 rank=65.7
+ep=78 step=12300 loss=0.0466 lr=2.58e-05 ema=0.9993 ctx=44
+  [eval step 12350] val=0.461 clean=0.463 occ40=0.272 noise.15=0.241 heldout_loss=0.1267 rank=65.7
+ep=79 step=12350 loss=0.0440 lr=2.49e-05 ema=0.9993 ctx=39
+  [eval step 12400] val=0.459 clean=0.465 occ40=0.269 noise.15=0.238 heldout_loss=0.1269 rank=65.8
+ep=79 step=12400 loss=0.0469 lr=2.40e-05 ema=0.9993 ctx=44
+  [eval step 12450] val=0.462 clean=0.465 occ40=0.271 noise.15=0.236 heldout_loss=0.1266 rank=65.8
+ep=79 step=12450 loss=0.0442 lr=2.31e-05 ema=0.9993 ctx=44
+  [eval step 12500] val=0.462 clean=0.467 occ40=0.269 noise.15=0.237 heldout_loss=0.1266 rank=65.8
+ep=80 step=12500 loss=0.0475 lr=2.22e-05 ema=0.9993 ctx=44
+  [eval step 12550] val=0.459 clean=0.467 occ40=0.271 noise.15=0.240 heldout_loss=0.1268 rank=65.9
+ep=80 step=12550 loss=0.0443 lr=2.14e-05 ema=0.9993 ctx=44
+  [eval step 12600] val=0.458 clean=0.465 occ40=0.271 noise.15=0.234 heldout_loss=0.1261 rank=65.8
+ep=80 step=12600 loss=0.0473 lr=2.05e-05 ema=0.9994 ctx=44
+  [eval step 12650] val=0.459 clean=0.466 occ40=0.274 noise.15=0.234 heldout_loss=0.1252 rank=65.6
+ep=81 step=12650 loss=0.0436 lr=1.97e-05 ema=0.9994 ctx=44
+  [eval step 12700] val=0.462 clean=0.469 occ40=0.273 noise.15=0.233 heldout_loss=0.1251 rank=65.7
+ep=81 step=12700 loss=0.0467 lr=1.89e-05 ema=0.9994 ctx=44
+  [eval step 12750] val=0.457 clean=0.463 occ40=0.270 noise.15=0.231 heldout_loss=0.1261 rank=65.9
+ep=81 step=12750 loss=0.0588 lr=1.81e-05 ema=0.9994 ctx=29
+  [eval step 12800] val=0.454 clean=0.470 occ40=0.273 noise.15=0.233 heldout_loss=0.1258 rank=65.9
+ep=82 step=12800 loss=0.0637 lr=1.73e-05 ema=0.9994 ctx=29
+  [eval step 12850] val=0.459 clean=0.465 occ40=0.273 noise.15=0.233 heldout_loss=0.1246 rank=65.7
+ep=82 step=12850 loss=0.0629 lr=1.65e-05 ema=0.9994 ctx=29
+  [eval step 12900] val=0.462 clean=0.465 occ40=0.271 noise.15=0.234 heldout_loss=0.1251 rank=65.9
+ep=82 step=12900 loss=0.0449 lr=1.58e-05 ema=0.9994 ctx=44
+  [eval step 12950] val=0.460 clean=0.467 occ40=0.272 noise.15=0.230 heldout_loss=0.1252 rank=65.9
+ep=83 step=12950 loss=0.0457 lr=1.51e-05 ema=0.9995 ctx=44
+  [eval step 13000] val=0.459 clean=0.464 occ40=0.274 noise.15=0.231 heldout_loss=0.1250 rank=65.9
+ep=83 step=13000 loss=0.0439 lr=1.43e-05 ema=0.9995 ctx=44
+  [eval step 13050] val=0.460 clean=0.466 occ40=0.273 noise.15=0.229 heldout_loss=0.1254 rank=66.0
+ep=83 step=13050 loss=0.0455 lr=1.36e-05 ema=0.9995 ctx=44
+  [eval step 13100] val=0.459 clean=0.466 occ40=0.273 noise.15=0.230 heldout_loss=0.1248 rank=65.9
+ep=83 step=13100 loss=0.0434 lr=1.30e-05 ema=0.9995 ctx=44
+  [eval step 13150] val=0.460 clean=0.468 occ40=0.272 noise.15=0.229 heldout_loss=0.1242 rank=65.8
+ep=84 step=13150 loss=0.0436 lr=1.23e-05 ema=0.9995 ctx=44
+  [eval step 13200] val=0.463 clean=0.468 occ40=0.275 noise.15=0.234 heldout_loss=0.1247 rank=65.9
+ep=84 step=13200 loss=0.0585 lr=1.17e-05 ema=0.9995 ctx=34
+  [eval step 13250] val=0.459 clean=0.468 occ40=0.271 noise.15=0.232 heldout_loss=0.1244 rank=65.9
+ep=84 step=13250 loss=0.0446 lr=1.10e-05 ema=0.9995 ctx=44
+  [eval step 13300] val=0.456 clean=0.465 occ40=0.274 noise.15=0.231 heldout_loss=0.1244 rank=66.0
+ep=85 step=13300 loss=0.0432 lr=1.04e-05 ema=0.9995 ctx=44
+  [eval step 13350] val=0.463 clean=0.467 occ40=0.273 noise.15=0.228 heldout_loss=0.1240 rank=66.0
+ep=85 step=13350 loss=0.0577 lr=9.82e-06 ema=0.9996 ctx=29
+  [eval step 13400] val=0.462 clean=0.467 occ40=0.275 noise.15=0.231 heldout_loss=0.1236 rank=66.0
+ep=85 step=13400 loss=0.0427 lr=9.24e-06 ema=0.9996 ctx=44
+  [eval step 13450] val=0.461 clean=0.467 occ40=0.273 noise.15=0.229 heldout_loss=0.1236 rank=65.9
+ep=86 step=13450 loss=0.0591 lr=8.67e-06 ema=0.9996 ctx=29
+  [eval step 13500] val=0.458 clean=0.465 occ40=0.273 noise.15=0.233 heldout_loss=0.1240 rank=66.1
+ep=86 step=13500 loss=0.0457 lr=8.13e-06 ema=0.9996 ctx=44
+  [eval step 13550] val=0.459 clean=0.467 occ40=0.274 noise.15=0.230 heldout_loss=0.1235 rank=66.0
+ep=86 step=13550 loss=0.0444 lr=7.60e-06 ema=0.9996 ctx=44
+  [eval step 13600] val=0.456 clean=0.466 occ40=0.273 noise.15=0.231 heldout_loss=0.1234 rank=66.0
+ep=87 step=13600 loss=0.0614 lr=7.09e-06 ema=0.9996 ctx=29
+  [eval step 13650] val=0.457 clean=0.467 occ40=0.272 noise.15=0.230 heldout_loss=0.1234 rank=66.0
+ep=87 step=13650 loss=0.0607 lr=6.59e-06 ema=0.9996 ctx=29
+  [eval step 13700] val=0.461 clean=0.465 occ40=0.273 noise.15=0.230 heldout_loss=0.1234 rank=66.0
+ep=87 step=13700 loss=0.0431 lr=6.12e-06 ema=0.9997 ctx=44
+  [eval step 13750] val=0.461 clean=0.465 occ40=0.275 noise.15=0.230 heldout_loss=0.1236 rank=66.0
+ep=88 step=13750 loss=0.0453 lr=5.66e-06 ema=0.9997 ctx=44
+  [eval step 13800] val=0.458 clean=0.467 occ40=0.275 noise.15=0.231 heldout_loss=0.1233 rank=66.0
+ep=88 step=13800 loss=0.0597 lr=5.22e-06 ema=0.9997 ctx=29
+  [eval step 13850] val=0.457 clean=0.466 occ40=0.275 noise.15=0.229 heldout_loss=0.1232 rank=66.0
+ep=88 step=13850 loss=0.0430 lr=4.80e-06 ema=0.9997 ctx=44
+  [eval step 13900] val=0.458 clean=0.465 occ40=0.276 noise.15=0.230 heldout_loss=0.1232 rank=66.0
+ep=89 step=13900 loss=0.0591 lr=4.39e-06 ema=0.9997 ctx=29
+  [eval step 13950] val=0.461 clean=0.465 occ40=0.273 noise.15=0.228 heldout_loss=0.1232 rank=66.0
+ep=89 step=13950 loss=0.0585 lr=4.00e-06 ema=0.9997 ctx=29
+  [eval step 14000] val=0.461 clean=0.466 occ40=0.275 noise.15=0.229 heldout_loss=0.1234 rank=66.0
+ep=89 step=14000 loss=0.0423 lr=3.63e-06 ema=0.9997 ctx=44
+  [eval step 14050] val=0.458 clean=0.465 occ40=0.273 noise.15=0.229 heldout_loss=0.1234 rank=66.1
+ep=90 step=14050 loss=0.0444 lr=3.28e-06 ema=0.9997 ctx=44
+  [eval step 14100] val=0.458 clean=0.466 occ40=0.273 noise.15=0.228 heldout_loss=0.1232 rank=66.1
+ep=90 step=14100 loss=0.0445 lr=2.94e-06 ema=0.9998 ctx=44
+  [eval step 14150] val=0.459 clean=0.468 occ40=0.274 noise.15=0.229 heldout_loss=0.1231 rank=66.0
+ep=90 step=14150 loss=0.0427 lr=2.63e-06 ema=0.9998 ctx=44
+  [eval step 14200] val=0.458 clean=0.466 occ40=0.275 noise.15=0.229 heldout_loss=0.1228 rank=66.1
+ep=91 step=14200 loss=0.0421 lr=2.33e-06 ema=0.9998 ctx=44
+  [eval step 14250] val=0.458 clean=0.468 occ40=0.275 noise.15=0.228 heldout_loss=0.1228 rank=66.1
+ep=91 step=14250 loss=0.0466 lr=2.05e-06 ema=0.9998 ctx=44
+  [eval step 14300] val=0.460 clean=0.468 occ40=0.275 noise.15=0.226 heldout_loss=0.1228 rank=66.1
+ep=91 step=14300 loss=0.0428 lr=1.78e-06 ema=0.9998 ctx=44
+  [eval step 14350] val=0.459 clean=0.467 occ40=0.275 noise.15=0.227 heldout_loss=0.1229 rank=66.0
+ep=91 step=14350 loss=0.0430 lr=1.54e-06 ema=0.9998 ctx=44
+  [eval step 14400] val=0.460 clean=0.468 occ40=0.274 noise.15=0.227 heldout_loss=0.1226 rank=66.0
+ep=92 step=14400 loss=0.0436 lr=1.31e-06 ema=0.9998 ctx=44
+  [eval step 14450] val=0.459 clean=0.467 occ40=0.275 noise.15=0.228 heldout_loss=0.1226 rank=66.0
+ep=92 step=14450 loss=0.0429 lr=1.10e-06 ema=0.9999 ctx=44
+  [eval step 14500] val=0.459 clean=0.467 occ40=0.275 noise.15=0.227 heldout_loss=0.1226 rank=66.0
+ep=92 step=14500 loss=0.0460 lr=9.10e-07 ema=0.9999 ctx=44
+  [eval step 14550] val=0.460 clean=0.466 occ40=0.275 noise.15=0.227 heldout_loss=0.1225 rank=66.0
+ep=93 step=14550 loss=0.0416 lr=7.38e-07 ema=0.9999 ctx=44
+  [eval step 14600] val=0.459 clean=0.467 occ40=0.275 noise.15=0.227 heldout_loss=0.1225 rank=66.0
+ep=93 step=14600 loss=0.0451 lr=5.83e-07 ema=0.9999 ctx=44
+  [eval step 14650] val=0.460 clean=0.468 occ40=0.275 noise.15=0.226 heldout_loss=0.1225 rank=66.0
+ep=93 step=14650 loss=0.0414 lr=4.46e-07 ema=0.9999 ctx=44
+  [eval step 14700] val=0.460 clean=0.467 occ40=0.275 noise.15=0.226 heldout_loss=0.1225 rank=66.0
+ep=94 step=14700 loss=0.0455 lr=3.28e-07 ema=0.9999 ctx=44
+  [eval step 14750] val=0.460 clean=0.467 occ40=0.275 noise.15=0.226 heldout_loss=0.1225 rank=66.0
+ep=94 step=14750 loss=0.0351 lr=2.28e-07 ema=0.9999 ctx=54
+  [eval step 14800] val=0.460 clean=0.467 occ40=0.275 noise.15=0.227 heldout_loss=0.1225 rank=66.0
+ep=94 step=14800 loss=0.0446 lr=1.46e-07 ema=0.9999 ctx=44
+  [eval step 14850] val=0.460 clean=0.467 occ40=0.275 noise.15=0.227 heldout_loss=0.1225 rank=66.0
+ep=95 step=14850 loss=0.0424 lr=8.20e-08 ema=1.0000 ctx=44
+  [eval step 14900] val=0.460 clean=0.467 occ40=0.275 noise.15=0.228 heldout_loss=0.1225 rank=66.0
+ep=95 step=14900 loss=0.0434 lr=3.65e-08 ema=1.0000 ctx=44
+  [eval step 14950] val=0.460 clean=0.467 occ40=0.275 noise.15=0.228 heldout_loss=0.1225 rank=66.0
+ep=95 step=14950 loss=0.0440 lr=9.11e-09 ema=1.0000 ctx=44
+  [eval step 15000] val=0.460 clean=0.467 occ40=0.275 noise.15=0.228 heldout_loss=0.1225 rank=66.0
+done: 885s training, peak memory 548 MB -> runs/scattered_var5_s0
+.../site-packages/torchvision/datasets/cifar.py:83: VisibleDeprecationWarning: dtype(): align should be passed as Python or NumPy boolean but got `align=0`. Did you mean to pass a tuple to create a subarray type? (Deprecated NumPy 2.4)
+  entry = pickle.load(f, encoding="latin1")
+random_init {'acc_clean': 35.2, 'acc_occ10': 33.8, 'acc_occ25': 29.3, 'acc_occ40': 24.9, 'acc_noise0.05': 34.2, 'acc_noise0.15': 25.9}
+pretrained {'acc_clean': 45.6, 'acc_occ10': 42.8, 'acc_occ25': 36.5, 'acc_occ40': 28.0, 'acc_noise0.05': 41.7, 'acc_noise0.15': 22.1}

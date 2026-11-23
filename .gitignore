@@ -1,0 +1,14 @@
+__pycache__/
+.pytest_cache/
+/cifar_data/
+/runs/
+/runs_notebook/
+notebooks/cifar_data/
+notebooks/runs*/
+report/*.aux
+report/*.log
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+report/*.out
+report/*.blg

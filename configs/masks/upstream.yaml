@@ -1,0 +1,6 @@
+# Original keon/jepa sampler (sample_ijepa_masks): 4 target blocks (scale 0.15-0.2, aspect 0.75-1.5, one size per
+# batch), context block (scale 0.85-1.0) minus all targets, trimmed to the batch minimum (~20 context tokens at
+# batch 64), 4 target sets of ~11 tokens each (~45 in total, ~32 distinct patches).
+strategy: upstream
+n_targets: 4
+min_ctx: 4

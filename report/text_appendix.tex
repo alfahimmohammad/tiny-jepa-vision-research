@@ -1,0 +1,48 @@
+\textbf{Code diff.} \texttt{models/modified\_ijepa.py} is upstream \texttt{ijepa.py} with only \texttt{train()} changed
+(\texttt{diff ../jepa/ijepa.py models/modified\_ijepa.py}); \texttt{Encoder}, \texttt{Predictor},
+\texttt{sample\_ijepa\_masks}, \texttt{ema\_update} and the loss formula are unchanged. The training step:
+\begin{lstlisting}
+for step in range(steps):                                            # was: for epoch ... for imgs, _ in loader
+    imgs = next(it)                                                  # seeded reshuffle of the 10k split per epoch
+    cl, tls, cols = mask_fn(imgs.size(0), ctx_enc.grid, rng)         # was: sample_ijepa_masks(...)  (models/masks.py)
+    ci = torch.tensor(cl, device=device); tis = [torch.tensor(t, device=device) for t in tls]
+    cols = cols or [slice(None)] * len(tis)                          # per-target context subset (all for the reported samplers)
+    ctx_imgs = add_context_noise(imgs, noise_gen, p, sigma_max) if ctx_noise else imgs  # H3: targets clean
+    with torch.no_grad(): full = F.layer_norm(tgt_enc(imgs), (D,))  # unchanged: stop-gradient target
+    ce = ctx_enc(ctx_imgs, ci)
+    loss = sum(F.smooth_l1_loss(pred(ce[:, c], ci[:, c], ti), full.gather(1, ti.unsqueeze(-1).expand(-1, -1, D)))
+               for c, ti in zip(cols, tis)) / len(tis)
+    opt.zero_grad(); loss.backward(); opt.step(); ema_update(tgt_enc, ctx_enc, m)   # unchanged
+\end{lstlisting}
+\textbf{Fixed-count rule} (\texttt{models/masks.py}, \texttt{blocks}; condensed). The upstream strategy is still the
+default and is tested to reproduce \texttt{sample\_ijepa\_masks} exactly.
+\begin{lstlisting}
+def blocks(B, grid, rng, ctx_size=20, tgt_size=32, n_targets=4, tgt_scale=(0.15, 0.20), ..., overlap=True):
+    for _ in range(max_geom_tries):
+        th, tw = _bsize(grid, rng.uniform(*tgt_scale), rng.uniform(*tgt_aspect))   # one shape per batch (as upstream)
+        ch, cw = _bsize(grid, rng.uniform(*ctx_scale), 1.0)
+        for b in range(B):
+            for _ in range(max_draw_tries):                           # redraw POSITIONS until the counts fit
+                union, blks = _place_blocks(grid, rng, th, tw, n_targets, overlap, tgt_size)  # n = 0: until >= tgt_size
+                if union.bit_count() < tgt_size: continue
+                c = rng.choice(_block_bits(grid, ch, cw)) & ~union     # context block minus ALL target patches
+                if c.bit_count() < ctx_size: continue
+                ctx_list.append(_take(rng, _bits_to_idx(c), ctx_size))          # uniform subset, exact count
+                tgt_sets.append([_take(rng, _bits_to_idx(t), tgt_size // len(blks)) for t in blks])  # one set per block
+                break
+            else: break                                               # redraw the batch's block sizes
+        if len(ctx_list) == B: return ctx_list, list(zip(*tgt_sets))   # n target sets of 32/n tokens (as upstream)
+\end{lstlisting}
+\textbf{Configs.} An experiment names a mask-strategy file whose arguments are the strategy's defaults:
+\begin{lstlisting}
+# configs/proposed.yaml           # configs/masks/1_large.yaml        # configs/masks/scattered.yaml (ablation)
+base: baseline.yaml               strategy: blocks                    strategy: scattered
+name: proposed                    ctx_size: 20                        ctx_size: 20
+mask: masks/1_large.yaml          tgt_size: 32                        tgt_size: 32
+                                  n_targets: 1                        tgt_scale: [0.04, 0.07]
+# configs/ctx_noise.yaml          tgt_scale: [0.52, 0.62]
+base: baseline.yaml               # other files: 2_large_overlap, 2_large_nonoverlap,
+ctx_noise: {p: 0.5, sigma_max: 0.2, seed: 50000}   # overlap_frac
+\end{lstlisting}
+\textbf{Context noise} (\texttt{add\_context\_noise}): with probability $p{=}0.5$ an image gets $\sigma\sim U(0,0.2)$ Gaussian noise in $[0,1]$
+space, clipped and re-normalised exactly like the test noise, from its own seeded generator.

@@ -1,0 +1,4 @@
+# Scattered small blocks, 5 target blocks, no token budgets: how varying context / target counts affect training.
+base: baseline.yaml
+name: scattered_var5
+mask: masks/scattered_var5.yaml

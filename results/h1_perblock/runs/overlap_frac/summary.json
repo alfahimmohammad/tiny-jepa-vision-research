@@ -1,0 +1,52 @@
+{
+ "run": "overlap_frac",
+ "config_path": "configs/overlap_frac.yaml",
+ "seed": 0,
+ "steps": 15000,
+ "batch_size": 64,
+ "splits_fingerprint": "f8c34b6bbf7f644f",
+ "params_trainable": 1412864,
+ "train_time_s": 516.3498213291168,
+ "peak_mem_mb": 262.44677734375,
+ "hardware": "NVIDIA L40S",
+ "torch": "2.11.0+cu126",
+ "config": {
+  "name": "overlap_frac",
+  "mask": {
+   "strategy": "overlap_frac",
+   "ctx_size": 20,
+   "tgt_size": 32,
+   "n_targets": 4,
+   "tgt_scale": [
+    0.15,
+    0.2
+   ],
+   "tgt_aspect": [
+    0.75,
+    1.5
+   ],
+   "ctx_scale": [
+    0.85,
+    1.0
+   ],
+   "max_overlap_frac": 0.25,
+   "full_ctx_below": 16,
+   "min_ctx": 12,
+   "per_block": true
+  },
+  "ctx_noise": null,
+  "seed": 0,
+  "steps": 15000,
+  "batch_size": 64,
+  "lr": 0.0003,
+  "wd": 0.05,
+  "ema_start": 0.996,
+  "ema_end": 1.0,
+  "num_workers": 2,
+  "eval_every": 50,
+  "data_root": "./cifar_data",
+  "splits_path": "results/splits.json",
+  "out_root": "runs",
+  "mask_file": "masks/overlap_frac.yaml"
+ }
+}

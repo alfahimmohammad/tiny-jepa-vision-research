@@ -1,0 +1,11 @@
+# Proposed (H1): ONE large contiguous target block of 35-42 patches; FIXED counts per image (ctx_size context
+# tokens drawn from the context block minus the target, tgt_size target tokens drawn from the block).
+strategy: blocks
+ctx_size: 20
+tgt_size: 32
+n_targets: 1
+tgt_scale: [0.52, 0.62]
+tgt_aspect: [0.75, 1.5]
+ctx_scale: [0.85, 1.0]
+overlap: true
+per_block: true            # one target set per block (upstream I-JEPA); false: one set from the union

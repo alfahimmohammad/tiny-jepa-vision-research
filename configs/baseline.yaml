@@ -1,0 +1,17 @@
+# Baseline: the unmodified Tiny I-JEPA (upstream model, loss, EMA and mask sampler), trained for a fixed number of
+# optimizer steps. Every other experiment config inherits these keys with `base: baseline.yaml`.
+name: baseline
+mask: masks/upstream.yaml      # mask strategy file (configs/masks/); `mask_args: {...}` overrides its arguments
+ctx_noise: null                # e.g. {p: 0.5, sigma_max: 0.2, seed: 50000}: noise on the context-encoder input only
+seed: 0
+steps: 15000                   # the assignment's initial budget is 500 (--steps 500); the report uses 15,000
+batch_size: 64
+lr: 3.0e-4
+wd: 0.05
+ema_start: 0.996
+ema_end: 1.0
+num_workers: 2
+eval_every: 50                 # fixed-probe metrics during training (eval_curve.csv); 0 = off
+data_root: ./cifar_data
+splits_path: results/splits.json
+out_root: runs

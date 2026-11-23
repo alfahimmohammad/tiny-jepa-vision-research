@@ -1,0 +1,90 @@
+\begin{description}[leftmargin=0pt,itemsep=2pt]
+\item[Does lower prediction loss correspond to better features?] No. Within a run the held-out loss is minimal at step 700,
+when accuracy and rank are still at random-encoder level, and then \emph{rises} while accuracy improves by 13 points.
+% ($\rho{=}{+}0.65$ between loss and validation accuracy after step 500). 
+The 500-step model has the lowest loss of the Part~A
+checkpoints (0.078) and random-level features. 
+After the initial drop in the training loss, the loss starts increasing due to the target encoder shifting away from 
+position-dependent features towards semnatic concepts making it harder for the context encoder and the predictor to learn.
+This forces the context encoder to learn useful contextual and semantic features from the availabel context features, 
+for the predictor to predict the hidden target features. This is supported by the increasing gaps between the validation 
+heldout latent loss, context-free loss and other-image context loss.
+% Across variants the lowest loss belongs to
+% scattered (0.113), the least noise-robust run (17.0 at $\sigma{=}0.15$). The early drop is learnt from positions: the loss with another image's
+% context falls exactly like the real-context loss, and a content-free per-position predictor beats both until step 250
+% (Sec.~\ref{sec:h2}). The effective rank, by contrast, tracks clean accuracy.
+%  ($\rho{=}{+}0.92$).
+
+\item[Does the change improve clean classification, occlusion robustness, or both?] The geometry change 
+(1\_large) is the most
+noise-robust geometry ($27.5{\pm}2.3$ vs $22.2{\pm}1.0$ at $\sigma{=}0.15$, 5 seeds each) and improves occlusion robustness
+(+2.3 / +2.8 points at 25 / 40\%) with a small clean gain (+0.9); it slows the noise failure but does not repair it (it stays
+at random-encoder level). Pretraining with context noise repairs the noise failure (+19.7 at $\sigma{=}0.15$) at a small clean cost ($-$1.4 with the
+selected probe) and leaves occlusion unchanged. 
+% Neither closes the gap to the oracle probe at 40\% occlusion (38.4\%), which
+% is the part of the drop due to a feature shift rather than to missing evidence.
+
+\item[Are gains caused by mask geometry, or by a change in visible/target counts?] By geometry. All H1 candidates use exactly
+20 context and 32 target tokens per image (scattered: 32--36), and the scattered
+ablation with the same counts is the least noise-robust run (17.0 vs $27.5{\pm}2.3$ for 1\_large at $\sigma{=}0.15$), with
+halved image-specific feature variance and a held-out loss close to a position-only prediction. On occlusion the separation
+is weaker (scattered, one seed, matches 1\_large at 25\% and is 1.1 points lower at 40\%), so the occlusion gain is only
+partly due to contiguity. Within ``geometry'',
+contiguity and block scale are confounded (1\_large has one large contiguous block, scattered many small ones).
+
+\item[Could extra parameters, different training exposure, or a probe change explain the result?] No for parameters: every
+run has 1{,}412{,}864 trainable parameters. No for exposure: same 15k steps, same seeded data order and images, and the
+predictor sees fewer target tokens than the baseline (32 vs 45). No for the probe: identical protocol, $(\mathrm{lr},\mathrm{wd})$
+selected on validation; the same ranking holds under the fixed probe setting (e.g.\ 1\_large 51.0 clean / 31.5 at 40\%
+occlusion, baseline 48.8 / 28.2). According to the paper, increasing the depth of the predictor can help with improved 
+downstream performance, but significant changes can only be seen when training on larger image sizes and larger dataset size.
+% For context noise the extra exposure \emph{is} the mechanism; its noise is drawn from a
+% range chosen knowing the strongest test level ($\sigma_{\max}{=}0.2>0.15$), with seeds disjoint from the test noise.
+
+\item[Could apparent feature stability come from collapsed or uninformative representations?] Yes, and this is observed in 
+the training loss graph where the loss initially drops and the heldout losses (context free, and other image's context) drop
+converge. At this point, the features are collapsed since they context encoder and predictor depend on the target positions
+to predict the target features and the target encoder's weights are still not fully changed from its random weights. But as
+the training proceeds, the target encoder shifts away and produces high image and patch variant target features, forcing the 
+context encoder and predictor to move beyond just depending on the target position embeddings and focus on contextual and 
+semantic concepts in the image. 
+
+% Yes, and the random encoder is
+% the clearest case: its features are the most stable under noise (clean--noisy cosine 0.997) and the least informative
+% (35\% clean). The baseline's stability falls as its rank grows (cosine 0.71 at 15k). Stability is only meaningful together
+% with rank and accuracy: context-noise pretraining is stable (0.95) \emph{and} informative (rank 57.7, 47.5\% clean). Scattered
+% masking shows the opposite pitfall: high pairwise cosine (0.60) from a halved image-specific variance without loss of rank.
+
+\item[Which single follow-up experiment would you prioritise with one more week?] To evaluate the pretrained encoders on low-level
+vision tasks like counting and segmentation and study the performance. To also scale the image size and dataset size to large datasets,
+and scale the encoder and predictor sizes, to study how it improves downstream performance and in which scenarios its features can collapse.
+% Evaluate context-noise pretraining (3 seeds,
+% combined with and without 1\_large) on corruptions it never saw, at a maximum training noise \emph{below} the test level
+% ($\sigma_{\max}{=}0.1$) and on other families (blur, JPEG, impulse noise, contrast; the standard CIFAR-10-C set). If robustness
+% transfers, the diagnosis ``missing invariance pressure'' is confirmed and the fix is a method; if it only helps at the trained
+% $\sigma$, it is test-condition matching. This single experiment decides which of the two the noise result is.
+\end{description}
+
+\subsection*{Final research question: what limits robust representation learning here?}
+% Pretraining with only the initial training budget of 500 steps limits the encoder from learning any useful features and results in 
+% poor downstream performance. 
+\begin{itemize}
+\item \textbf{Image size} The small image size $32\times32$ limits different masking patterns and strategies when experimenting with larger target blocks.
+\item \textbf{Not feature collapse.} Every run ends with effective rank 57--66, top-1 singular-value share $\le$0.16 and growing
+feature spread; the one contraction we found (scattered) leaves the rank intact.
+\item \textbf{Not context size or target overlap.} Lowering the context to 16.8 tokens and capping the overlap between the
+4 small blocks change accuracy by at most 1.5 points.
+\item \textbf{Mask geometry decides what the encoder relies on.} Large targets far from the context keep image-level
+features and the best noise robustness of any geometry (1\_large, +5.3 points at $\sigma{=}0.15$); small targets next to the
+context produce local, position-driven features and the worst (scattered, $-$5.2). Geometry alone does not make the encoder
+noise-invariant, and adds $\approx$3 points under 40\% occlusion.
+\item \textbf{Limited training is the bottleneck only at the assignment budget.} At 500 steps the encoder equals a random encoder;
+longer training improves clean accuracy but \emph{worsens} noise robustness.
+\item \textbf{Best-supported explanation: the objective has no invariance pressure, and a clean-only probe protocol exposes it.}
+I-JEPA's target is the clean image's own features, so the encoder grows features for fine local structure that noise
+perturbs; the class information survives (39.6\% with a probe trained on mixed clean and noisy images) but moves in feature space. Putting the
+perturbation on the context side alone recovers it (41.9\% with the clean probe). For occlusion the largest part of the drop
+is missing evidence (the supervised reference loses the same fraction).
+\item \textbf{Next experiment:} Scaling the image and dataset sizes, scaling the encoder and predictor networks, 
+and measure the feature robustness against noise, occusion. To also evaluate the features on low-level vision tasks.
+\end{itemize}

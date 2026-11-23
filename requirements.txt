@@ -1,0 +1,9 @@
+# Versions used for every run in this repo (Colab: torch/torchvision are preinstalled; the rest via pip).
+torch==2.11.0
+torchvision==0.26.0
+numpy==2.4.4
+pillow==12.2.0
+pyyaml
+matplotlib==3.10.9
+pandas==3.0.3
+pytest

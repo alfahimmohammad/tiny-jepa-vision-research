@@ -1,0 +1,13 @@
+# Scattered small blocks with a cap of 5 target blocks and NO token budgets (upstream-style counts): per batch one
+# small-block size (2-6 patches) and one context-block size; per image exactly 5 non-overlapping blocks, each
+# predicted whole as its own target set (10-30 target tokens per image, varying by batch); the context is the
+# context block minus all targets, randomly trimmed to the batch minimum (as sample_ijepa_masks).
+strategy: scattered
+n_targets: 5               # number of target blocks per image
+ctx_size: null             # no context budget: batch-minimum trim
+tgt_size: null             # no target budget: whole blocks
+tgt_scale: [0.04, 0.07]
+tgt_aspect: [0.75, 1.5]
+ctx_scale: [0.85, 1.0]
+min_ctx: 4                 # redraw an image whose context has fewer patches (upstream's min_ctx)
+per_block: true            # one target set (and loss term) per block

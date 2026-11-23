@@ -1,0 +1,10 @@
+# Two large target blocks (16-20 patches each) that never overlap; fixed counts as 1_large.
+strategy: blocks
+ctx_size: 20
+tgt_size: 32
+n_targets: 2
+tgt_scale: [0.25, 0.32]
+tgt_aspect: [0.75, 1.5]
+ctx_scale: [0.85, 1.0]
+overlap: false
+per_block: true            # one target set per block (upstream I-JEPA); false: one set from the union

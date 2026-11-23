@@ -1,0 +1,12 @@
+\begin{table}[t]\centering\small\setlength{\tabcolsep}{3.5pt}
+\caption{Baseline: frozen context encoder, clean-trained linear probe, test accuracy (\%, mean $\pm$ std over $n$ pretraining seeds). Held-out latent loss on fixed validation images and masks; feature std = mean per-feature std of pooled features; rank = effective rank (/128).}
+\label{tab:baseline}
+\begin{tabular}{lcccccccccc}\toprule
+Encoder & $n$ & Clean & Occ 10\% & Occ 25\% & Occ 40\% & Noise .05 & Noise .15 & Loss & Feat.\ std & Rank \\\midrule
+I-JEPA, 500 steps & 3 & 35.2{\scriptsize$\pm$0.5} & 33.6{\scriptsize$\pm$0.4} & 29.6{\scriptsize$\pm$1.3} & 23.5{\scriptsize$\pm$0.1} & 35.0{\scriptsize$\pm$0.7} & 31.3{\scriptsize$\pm$1.4} & 0.078 & 0.495 & 22.4 \\
+I-JEPA, 5k steps & 3 & 42.9{\scriptsize$\pm$1.4} & 40.5{\scriptsize$\pm$1.4} & 32.3{\scriptsize$\pm$1.1} & 24.3{\scriptsize$\pm$1.1} & 41.6{\scriptsize$\pm$1.3} & 32.3{\scriptsize$\pm$0.5} & 0.113 & 0.549 & 51.9 \\
+I-JEPA, 15k steps & 5 & 48.9{\scriptsize$\pm$0.4} & 46.1{\scriptsize$\pm$0.5} & 37.3{\scriptsize$\pm$0.8} & 28.9{\scriptsize$\pm$0.4} & 45.8{\scriptsize$\pm$0.4} & 22.2{\scriptsize$\pm$1.0} & 0.150 & 0.618 & 62.9 \\
+\quad its random init & 5 & 35.1{\scriptsize$\pm$0.3} & 34.1{\scriptsize$\pm$0.9} & 29.6{\scriptsize$\pm$0.6} & 23.9{\scriptsize$\pm$0.7} & 34.2{\scriptsize$\pm$0.8} & 26.6{\scriptsize$\pm$1.3} & 0.533 & 0.380 & 23.8 \\
+\midrule
+\textit{Supervised ref., 5k} & 3 & 59.6{\scriptsize$\pm$0.3} & 55.0{\scriptsize$\pm$1.2} & 45.3{\scriptsize$\pm$0.7} & 35.4{\scriptsize$\pm$1.0} & 58.2{\scriptsize$\pm$0.6} & 44.6{\scriptsize$\pm$0.2} & -- & 0.824 & 64.9 \\
+\bottomrule\end{tabular}\end{table}

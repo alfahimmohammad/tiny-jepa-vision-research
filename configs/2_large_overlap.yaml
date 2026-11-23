@@ -1,0 +1,3 @@
+base: baseline.yaml
+name: 2_large_overlap
+mask: masks/2_large_overlap.yaml

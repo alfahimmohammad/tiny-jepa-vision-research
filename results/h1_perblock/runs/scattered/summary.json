@@ -1,0 +1,48 @@
+{
+ "run": "ablation",
+ "config_path": "configs/ablation.yaml",
+ "seed": 0,
+ "steps": 15000,
+ "batch_size": 64,
+ "splits_fingerprint": "f8c34b6bbf7f644f",
+ "params_trainable": 1412864,
+ "train_time_s": 852.4997708797455,
+ "peak_mem_mb": 509.46826171875,
+ "hardware": "NVIDIA L40S",
+ "torch": "2.11.0+cu126",
+ "config": {
+  "name": "ablation",
+  "mask": {
+   "strategy": "scattered",
+   "ctx_size": 20,
+   "tgt_size": 32,
+   "tgt_scale": [
+    0.04,
+    0.07
+   ],
+   "tgt_aspect": [
+    0.75,
+    1.5
+   ],
+   "ctx_scale": [
+    0.85,
+    1.0
+   ],
+   "per_block": true
+  },
+  "ctx_noise": null,
+  "seed": 0,
+  "steps": 15000,
+  "batch_size": 64,
+  "lr": 0.0003,
+  "wd": 0.05,
+  "ema_start": 0.996,
+  "ema_end": 1.0,
+  "num_workers": 2,
+  "eval_every": 50,
+  "data_root": "./cifar_data",
+  "splits_path": "results/splits.json",
+  "out_root": "runs",
+  "mask_file": "masks/scattered.yaml"
+ }
+}

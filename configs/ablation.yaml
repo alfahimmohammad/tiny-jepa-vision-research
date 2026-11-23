@@ -1,0 +1,4 @@
+# Ablation: same counts as the proposed model, targets scattered over many small blocks (no contiguity).
+base: baseline.yaml
+name: ablation
+mask: masks/scattered.yaml

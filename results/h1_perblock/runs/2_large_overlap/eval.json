@@ -1,0 +1,145 @@
+{
+ "rows": [
+  {
+   "run": "2_large_overlap",
+   "config": "configs/2_large_overlap.yaml",
+   "seed": 0,
+   "steps": 15000,
+   "encoder": "random_init",
+   "probe_lr": 0.01,
+   "probe_wd": 0.01,
+   "val_acc": 0.3880000114440918,
+   "acc_clean": 0.35199999809265137,
+   "acc_occ10": 0.33799999952316284,
+   "acc_occ25": 0.2930000126361847,
+   "acc_occ40": 0.24899999797344208,
+   "acc_noise0.05": 0.34200000762939453,
+   "acc_noise0.15": 0.2590000033378601,
+   "cos_occ10": 0.9980530738830566,
+   "cos_occ25": 0.9914646148681641,
+   "cos_occ40": 0.9819995164871216,
+   "cos_noise0.05": 0.9997225999832153,
+   "cos_noise0.15": 0.9967676401138306,
+   "oracle_acc_occ10": 0.3409999907016754,
+   "oracle_acc_occ25": 0.33399999141693115,
+   "oracle_acc_occ40": 0.31450000405311584,
+   "oracle_acc_noise0.05": 0.3425000011920929,
+   "oracle_acc_noise0.15": 0.30799999833106995,
+   "feat_std_mean": 0.3266114890575409,
+   "eff_rank": 21.917341232299805,
+   "top1_sv_frac": 0.7294895648956299,
+   "mean_pairwise_cos": 0.8361330628395081,
+   "heldout_loss": 0.4952879150708516,
+   "heldout_loss_other_ctx": 0.4940734525521596,
+   "heldout_loss_mean_target": 0.12683938493331273,
+   "mixed_probe_lr": 0.01,
+   "mixed_probe_wd": 0.01,
+   "mixed_probe_val_mean": 0.35999999940395355,
+   "mixed_probe_acc_clean": 0.34450000524520874,
+   "mixed_probe_acc_occ10": 0.3334999978542328,
+   "mixed_probe_acc_occ25": 0.2824999988079071,
+   "mixed_probe_acc_occ40": 0.2409999966621399,
+   "mixed_probe_acc_noise0.05": 0.34299999475479126,
+   "mixed_probe_acc_noise0.15": 0.31299999356269836,
+   "params_trainable": 1412864,
+   "train_time_s": 541.307418346405,
+   "peak_mem_mb": 262.44677734375,
+   "hardware": "NVIDIA L40S"
+  },
+  {
+   "run": "2_large_overlap",
+   "config": "configs/2_large_overlap.yaml",
+   "seed": 0,
+   "steps": 15000,
+   "encoder": "pretrained",
+   "probe_lr": 0.01,
+   "probe_wd": 0.0,
+   "val_acc": 0.5109999775886536,
+   "acc_clean": 0.5184999704360962,
+   "acc_occ10": 0.48899999260902405,
+   "acc_occ25": 0.3774999976158142,
+   "acc_occ40": 0.2770000100135803,
+   "acc_noise0.05": 0.4699999988079071,
+   "acc_noise0.15": 0.21950000524520874,
+   "cos_occ10": 0.9682751893997192,
+   "cos_occ25": 0.8808169364929199,
+   "cos_occ40": 0.7740468978881836,
+   "cos_noise0.05": 0.9397329092025757,
+   "cos_noise0.15": 0.6953753232955933,
+   "oracle_acc_occ10": 0.4959999918937683,
+   "oracle_acc_occ25": 0.4104999899864197,
+   "oracle_acc_occ40": 0.38749998807907104,
+   "oracle_acc_noise0.05": 0.484499990940094,
+   "oracle_acc_noise0.15": 0.40549999475479126,
+   "feat_std_mean": 0.5880593657493591,
+   "eff_rank": 60.3741569519043,
+   "top1_sv_frac": 0.1263524740934372,
+   "mean_pairwise_cos": 0.31454506516456604,
+   "heldout_loss": 0.1417342782020569,
+   "heldout_loss_other_ctx": 0.3810082793235779,
+   "heldout_loss_mean_target": 0.2651037792364756,
+   "mixed_probe_lr": 0.01,
+   "mixed_probe_wd": 0.01,
+   "mixed_probe_val_mean": 0.45499999821186066,
+   "mixed_probe_acc_clean": 0.49000000953674316,
+   "mixed_probe_acc_occ10": 0.4634999930858612,
+   "mixed_probe_acc_occ25": 0.3605000078678131,
+   "mixed_probe_acc_occ40": 0.2784999907016754,
+   "mixed_probe_acc_noise0.05": 0.4860000014305115,
+   "mixed_probe_acc_noise0.15": 0.41449999809265137,
+   "params_trainable": 1412864,
+   "train_time_s": 541.307418346405,
+   "peak_mem_mb": 262.44677734375,
+   "hardware": "NVIDIA L40S"
+  }
+ ],
+ "corruptions": {
+  "clean": {
+   "sha256": "7f32e1554bb2cf27"
+  },
+  "occ10": {
+   "seed": 1000,
+   "side_px": 10,
+   "area_frac": 0.09765625,
+   "fill": [
+    0.4914,
+    0.4822,
+    0.4465
+   ],
+   "sha256": "ddaa330b93305b32"
+  },
+  "occ25": {
+   "seed": 1001,
+   "side_px": 16,
+   "area_frac": 0.25,
+   "fill": [
+    0.4914,
+    0.4822,
+    0.4465
+   ],
+   "sha256": "284cfa9b57038439"
+  },
+  "occ40": {
+   "seed": 1002,
+   "side_px": 20,
+   "area_frac": 0.390625,
+   "fill": [
+    0.4914,
+    0.4822,
+    0.4465
+   ],
+   "sha256": "7617e0802c97a5c4"
+  },
+  "noise0.05": {
+   "seed": 1010,
+   "std": 0.05,
+   "sha256": "3b300233e6f8468f"
+  },
+  "noise0.15": {
+   "seed": 1011,
+   "std": 0.15,
+   "sha256": "22328ee2b7982ff8"
+  }
+ },
+ "splits_fingerprint": "f8c34b6bbf7f644f"
+}

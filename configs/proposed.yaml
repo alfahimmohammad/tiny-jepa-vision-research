@@ -1,0 +1,4 @@
+# Proposed (H1): one large contiguous target block, fixed counts (20 context / 32 target tokens).
+base: baseline.yaml
+name: proposed
+mask: masks/1_large.yaml

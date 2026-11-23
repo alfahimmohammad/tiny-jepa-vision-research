@@ -1,0 +1,31 @@
+{
+  "run": "supervised_reference",
+  "seed": 2,
+  "steps": 5000,
+  "batch_size": 64,
+  "params_trainable": 1197450,
+  "runtime_s": 78.60441660881042,
+  "peak_mem_mb": 256.19189453125,
+  "hardware": "NVIDIA L40S",
+  "final_ce_last50_mean": 0.8445260548591613,
+  "config": {
+    "name": "supervised_reference",
+    "seed": 2,
+    "steps": 5000,
+    "batch_size": 64,
+    "lr": 0.0003,
+    "wd": 0.05,
+    "warmup_frac": 0.05,
+    "ema_start": 0.996,
+    "ema_end": 1.0,
+    "n_targets": 4,
+    "min_ctx": 4,
+    "num_workers": 4,
+    "log_every": 25,
+    "ckpt_every": 100,
+    "keep_ckpts": [],
+    "data_root": "./cifar_data",
+    "splits_path": "results/splits.json"
+  },
+  "note": "uses labels of the 10k pretraining subset; diagnostic reference only"
+}

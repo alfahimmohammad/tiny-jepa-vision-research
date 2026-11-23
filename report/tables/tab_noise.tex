@@ -1,0 +1,12 @@
+\begin{table}[t]\centering\small\setlength{\tabcolsep}{3.2pt}
+\caption{The noise failure and two remedies (test accuracy, \%, 15k steps). Rows 3--4: the \emph{frozen} encoder (seed 0) with a \emph{mixed-trained} probe: every epoch each probe-train image is clean or, with probability $\tfrac12$, a fresh $\sigma{=}0.15$ noisy copy; $(\mathrm{lr},\mathrm{wd})$ chosen on the mean of clean and noisy validation accuracy. Row 5: pretraining with noise on the context-encoder input only ($p{=}0.5$, $\sigma\sim U(0,0.2)$), evaluated with the standard clean-trained probe; its ablation ($p{=}0$) is row 1. cos$_{.15}$: mean cosine between the clean and $\sigma{=}0.15$ features of the same test image.}
+\label{tab:noise}
+\begin{tabular}{lccccccc}\toprule
+Encoder / probe & Clean & Occ 10\% & Occ 25\% & Occ 40\% & Noise .05 & Noise .15 & cos$_{.15}$ \\\midrule
+Baseline, clean probe (5 seeds) & 48.9{\scriptsize$\pm$0.4} & 46.1{\scriptsize$\pm$0.5} & 37.3{\scriptsize$\pm$0.8} & 28.9{\scriptsize$\pm$0.4} & 45.8{\scriptsize$\pm$0.4} & 22.2{\scriptsize$\pm$1.0} & 0.71 \\
+Random init, clean probe (5 seeds) & 35.1{\scriptsize$\pm$0.3} & 34.1{\scriptsize$\pm$0.9} & 29.6{\scriptsize$\pm$0.6} & 23.9{\scriptsize$\pm$0.7} & 34.2{\scriptsize$\pm$0.8} & 26.6{\scriptsize$\pm$1.3} & 1.00 \\\midrule
+Baseline (s0), \emph{mixed-trained probe} & 48.8 & 46.3 & 35.8 & 27.7 & 48.1 & 39.6 & -- \\
+Random init (s0), \emph{mixed-trained probe} & 34.5 & 33.3 & 28.2 & 24.1 & 34.3 & 31.3 & -- \\
+\midrule
+\textbf{Context-noise pretraining} (s0), clean probe & 47.5 & 46.0 & 38.4 & 29.9 & 47.6 & 41.9 & 0.95 \\
+\bottomrule\end{tabular}\end{table}

@@ -1,0 +1,416 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\setlist{itemsep=1pt,topsep=2pt,parsep=0pt,leftmargin=*}
+\setlength{\parskip}{2pt}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,frame=single,framerule=0.3pt,
+        breaklines=true,keywordstyle=\color{blue!60!black},commentstyle=\color{gray},language=Python,
+        xleftmargin=2pt,xrightmargin=2pt}
+\newcommand{\obs}{\textsc{Observed.}~}
+\newcommand{\interp}{\textsc{Interpretation.}~}
+\newcommand{\spec}{\textsc{Speculation.}~}
+\newcommand{\up}[1]{\textcolor{green!45!black}{#1}}
+\newcommand{\dn}[1]{\textcolor{red!70!black}{#1}}
+
+\title{\vspace{-1.2cm}Masking Geometry and Noise Robustness in a Tiny I-JEPA on CIFAR-10:\\
+a Controlled Study\vspace{-0.2cm}}
+\author{Mohammad Al Fahim \\ \small HackerRank Deep Learning Research Engineer assignment}
+\date{\small November 2026}
+
+\begin{document}
+\maketitle
+\vspace{-0.6cm}
+
+\begin{abstract}
+\noindent
+We reproduce the Tiny I-JEPA of \texttt{keon/jepa}~\cite{keon2023jepa} on fixed CIFAR-10 splits and evaluate its frozen
+context encoder with a linear probe under occlusion and Gaussian noise. The baseline does not collapse and its clean accuracy
+keeps rising with training (35.2\% at the required 500 steps, $48.9{\pm}0.4$\% at 15k steps over 5 seeds), but its accuracy at
+noise $\sigma{=}0.15$ \emph{falls} after $\sim$2k steps, to $22.2{\pm}1.0$\%, below a frozen random encoder ($26.6{\pm}1.3$\%).
+The latent loss is minimal at step 700, when the features are still at random-encoder level, and its first drop is learnt
+from target positions alone: lower loss does not mean better features (H2 supported). For the research change we test masking
+geometry (H1) with six samplers, five of them with fixed token counts. One large contiguous target block is the
+most noise-robust geometry: $27.5{\pm}2.3$\% at $\sigma{=}0.15$ against $22.2{\pm}1.0$\% for the baseline (5 seeds each),
+keeping 55\% instead of 45\% of its clean accuracy, with +2.3/+2.8 points at 25\%/40\% occlusion. Its ablation with the
+same token counts but many small scattered target blocks is the least robust (17.0\%, 34\% of clean). With one large hole
+most targets are far from the visible context and must be inferred from image-level content; with small blocks every target
+has context one patch away, and the model solves the task from local detail and target positions: the scattered encoder
+halves the image-specific feature variance, and its held-out loss depends much less on the image's own context and is much
+closer to a position-only prediction. No geometry, however, lifts noise accuracy clearly above a frozen random encoder. A probe trained on a mix of clean and noisy images recovers 39.6\% at $\sigma{=}0.15$ from the \emph{same} frozen
+baseline encoder without losing clean accuracy (48.8\%): the class information survives and only moves in feature space. Adding noise to the context-encoder input
+during pretraining (targets stay clean) gives 41.9\% with the standard clean probe at a 1.4-point clean cost. The best
+supported answer to the final question: the bottleneck is not collapse or context size; mask geometry decides how much the
+encoder relies on local detail and positions, and hence how fragile it is to noise, but the main limit is the absence of any
+invariance pressure in the objective, which a clean-only probe protocol exposes.
+\end{abstract}
+
+%=====================================================================================================
+\section{Architecture and code-level explanation (A1)}
+\label{sec:arch}
+All line numbers refer to \texttt{ijepa.py} at commit \texttt{d55bab7b}; the full write-up is in
+\texttt{docs/A1\_code\_explanation.md}.
+
+\textbf{Patch tokens and the encoder.} The encoder follows the ViT architecture with hidden dimension 128, depth 6 and 4 heads. 
+\texttt{patch\_proj} is a $4{\times}4$/stride-4 convolution, so a $32{\times}32$
+image becomes $8{\times}8$ grid: 64 tokens of dimension 128 (row-major; token $p$ is patch $(\lfloor p/8\rfloor, p \bmod 8)$). A fixed 2-D
+sin--cos table is added and used for position embedding (L59, L67). Given indices \texttt{idx} (L66--69), the encoder \emph{gathers} only those tokens
+before the 6 pre-LN transformer blocks, so masked patches are physically absent (no mask token, no attention to them).
+Because kernel = stride, gathering after the convolution cannot leak target pixels. Evaluation calls the
+encoder with \texttt{idx=None} and mean-pools the 64 output features (no CLS token).
+
+\textbf{\texttt{sample\_ijepa\_masks()} (L91--117).} Per \emph{batch} uses one target shape (scale $U(0.15,0.20)$, aspect
+$U(0.75,1.5)$, i.e.\ $3{\times}3$, $3{\times}4$, $4{\times}3$ or rarely $4{\times}4$ patches) and one square context shape
+(scale $U(0.85,1)$, $7{\times}7$ or $8{\times}8$) are drawn. Per \emph{image}, 4 target blocks are placed uniformly (they may
+overlap; their union is $\approx$32 patches), then the context block is placed and every target patch is removed from it
+% (retry $\le$10 times for $\ge$4 patches; a fallback to \texttt{[0]} could leak a target patch on tiny grids, so we wrap the sampler in a leak check). 
+Finally every context patch is randomly subsampled to the \emph{batch minimum} length, so the context
+length depends on the batch size ($\approx$29 tokens at $B{=}1$, 20 at $B{=}64$, 19 at $B{=}256$) and varies between steps
+(4--31 at $B{=}64$). The predictor must produce $4{\times}\approx 11{=}45$ target tokens from $\approx$20 visible context features.
+
+\textbf{Predictor and latent targets.} The predictor follows a narrower version of the encoder architecture with hidden dimension 64, depth 4 and 4 heads. 
+The predictor (L74--88) projects context features $128{\to}64$, adds their positions,
+appends one shared learnable mask token plus position for each target patch, runs 4 blocks, and maps the target slots back
+to 128-d. It is called once per target block. Its target is $\mathrm{LN}(f_{\bar\theta}(x))$ at the target positions from
+the EMA encoder applied to the \emph{full} image (masking the encoder \emph{output}, as in~\cite[Tab.~11]{assran2023ijepa}).
+Predicting features instead of pixels lets the model discard unnecessary pixel detail; the paper reports 66.9\% vs
+40.7\% (1\% ImageNet) for feature vs pixel targets~\cite[Tab.~7]{assran2023ijepa}.
+
+\textbf{EMA and stop-gradient (L37--40, L127--153).} The target encoder is a frozen deep copy (\texttt{requires\_grad=False},
+forward under \texttt{no\_grad}, not in the optimizer) updated only by $\bar\theta\leftarrow m\bar\theta+(1-m)\theta$ after each
+optimizer step, $m$: $0.996\to1$. With this schedule the target still carries weight $\prod_s m_s\approx e^{-1}\approx 0.37$
+on its random initialisation after 500 steps (0.13 after 1k, $\approx$0 after 5k). Nothing in the loss prevents feature collapse and the
+asymmetry (predictor + stop-gradient + EMA) is the only protection
+% , and LN on the targets does not remove a shared constant.
+
+\textbf{Low loss vs collapse vs poor accuracy.} These are different measurements. The loss is relative to a moving target and
+can be small because the target is \emph{easy} (near-random, low-rank or position-dominated). Collapse means features stop
+varying across images (complete) or vary in few directions (dimensional), so we measure per-feature std, effective
+rank~\cite{roy2007effrank}, top-1 singular-value share and mean pairwise cosine. Poor accuracy means that the feature reprsentations are not
+linearly class-separable. To expose a \emph{positional shortcut} we report two content-ablated held-out losses: context taken
+from \emph{another} image, and a content-free predictor that outputs the per-position mean (loss evaluates the target position features and is calculated against the per-position mean target features and the target features. So if the loss value is low: per-position target features are the position biased features, and if the loss is high, then target features highly depend on the image features).
+If the heldout-latent loss on validation set is close to the content-free heldout loss, then the predictor returns features highly biased on the target positions.
+
+\textbf{What we modify and what must stay invariant.} We replaced \texttt{train()} by a step-limited loop and changed only
+the mask sampler (Part B) and, in Sec.~\ref{sec:noise}, the context-encoder input. Invariants (all tested,
+App.~\ref{app:tests}): valid, disjoint context/target indices; rectangular batches; context encoder sees only visible tokens;
+target under \texttt{no\_grad}, absent from the optimizer and changed only by EMA (applied after \texttt{opt.step()});
+identical loss (tested equal to the upstream inline code); frozen encoder during probing; identical splits and corruption
+tensors (hash-checked) for every model.
+
+%=====================================================================================================
+\section{Pipeline and evaluation protocol (A2)}
+\label{sec:pipeline}
+\textbf{Data.} From the official CIFAR-10~\cite{krizhevsky2009cifar} training split we draw, with seed 0, disjoint
+class-stratified subsets: 10{,}000 unlabelled pretraining, 2{,}000 probe-training and 1{,}000 validation images; 2{,}000
+test images come from the official test split (seed 1). Indices are stored in \texttt{results/splits.json}
+(fingerprint \texttt{f8c34b6bbf7f644f}, checked by every notebook).
+
+\textbf{Stress tests.} Applied once, in $[0,1]$ pixel space before normalisation, to the same 2{,}000 test images.
+Occlusion: one square of side 10/16/20 px (9.8/25.0/39.1\% of the area) at a uniform random position, filled with the
+CIFAR-10 channel mean (0 after normalisation); seeds 1000--1002. Gaussian noise: $x+\mathcal N(0,\sigma^2)$, $\sigma\in\{0.05,0.15\}$,
+clipped to $[0,1]$; seeds 1010--1011. Tensor hashes are identical across all runs, so comparisons are paired.
+
+\textbf{Training.} Unmodified upstream model, loss, optimiser (AdamW, lr $3{\times}10^{-4}$, wd 0.05 on 2-D weights, 5\%
+warm-up + cosine decay scheduler), EMA schedule and augmentation (RandomResizedCrop 0.3--1), batch 64, FP32, 1{,}412{,}864 trainable
+parameters. \textbf{Budgets (disclosed):} 500 steps (assignment), 5{,}000 steps (3 seeds, Part~A) and 15{,}000 steps for
+every Part B/C comparison (96 epochs; $\approx$15--25 mins on one L40S, peak memory 0.26--0.33 GB). We select the final step checkpoint from all trainings for downstream evaluations.
+
+\textbf{Probe.} We use the Frozen \emph{context} encoder, all 64 patch features, mean pooling, features standardised with probe-train
+statistics, \texttt{Linear(128,10)}, AdamW, batch 256, 100 epochs; $(\mathrm{lr},\mathrm{wd})\in\{10^{-3},3{\cdot}10^{-3},10^{-2}\}\times\{0,10^{-4},10^{-2}\}$
+selected on \emph{validation}; the test set is never used for selection. The probe is trained on clean images only and
+applied unchanged to every test condition. Every result also reports the frozen random-initialisation encoder of the same
+run as control. Curves during training use a single fixed probe setting (lr $3{\cdot}10^{-3}$, wd $10^{-4}$).
+
+\textbf{Diagnostics.} Held-out latent loss on 1{,}000 validation images with fixed masks (seed 12345), plus the two
+content-ablated variants of Sec.~\ref{sec:arch}; collapse statistics on clean test features (probe with frozen encoder trained on clean test features and evaluated for robustness during training); an \emph{oracle} probe (refit on
+corrupted probe-train images for diagnosis of the failure mode only) that measures how much class information remains linearly decodable.
+
+\textbf{Tests and engineering.} 49 pytest tests (App.~\ref{app:tests}) plus in-notebook assertions for every new sampler.
+The Colab notebook \texttt{notebooks/experiment.ipynb} runs top to bottom in a fresh runtime (setup, CPU smoke test with one
+batch forward/backward and one optimiser step, tests, splits, baseline/proposed/ablation, probe evaluation, robustness plots).
+The experiments were developed in notebooks; all numbers below were produced by one script that executes those notebooks'
+own cells headless, which reproduced every notebook result we had recorded within 0.1 points (L40S vs RTX 2080 Ti numerics).
+
+%=====================================================================================================
+\section{Baseline (A3)}
+\label{sec:baseline}
+\input{tables/tab_baseline}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_baseline.pdf}
+\caption{Baseline dynamics (15k steps, seed 0). (a) Training loss and held-out latent loss with the real context, with
+another image's context, and for a content-free predictor that outputs the per-position mean target. (b) Effective rank of
+pooled features. (c) Test accuracy with a fixed clean-trained probe; dotted: the step-0 (random) encoder. (d) Cosine between
+clean and corrupted features of the same image.}
+\label{fig:baseline}
+\end{figure}
+
+\obs (Tab.~\ref{tab:baseline}, Fig.~\ref{fig:baseline}.) At the assignment budget of 500 steps the pretrained encoder is
+indistinguishable from the frozen random encoder on clean data (35.2 vs 35.1) and on every occlusion level; only
+$\sigma{=}0.15$ noise is higher (31.3 vs 26.6). Longer training is required for useful features: 42.9\% at 5k and 48.8\% at
+15k steps clean (5 seeds, $\pm$0.4), always far above the random encoder (35.1\%). The supervised reference (same ViT and data,
+labels used; diagnostic only) reaches 59.6\% at 5k. Noise $\sigma{=}0.15$ is the exception: 31.3\% at 500 steps, 32.3\% at 5k,
+but $22.2{\pm}1.0$\% at 15k, below the random encoder's $26.6{\pm}1.3$\% (Sec.~\ref{sec:failure}).
+
+%=====================================================================================================
+\section{Hypotheses (A4)}
+\label{sec:hyp}
+\textbf{H1 -- masking geometry.} With per-image context and target token counts held equal to the baseline (20 visible,
+32 target patches), replacing the 4 small target blocks by 1--2 large contiguous blocks raises clean-probe accuracy at
+25\% and 40\% occlusion by more than the seed standard deviation without lowering clean accuracy by more than 1.4 points.
+This can be falsified if the gain is within seed noise, or if the scattered-block control with the same counts gets the same
+gain (then counts, not geometry, are responsible).
+
+\textbf{H2 -- loss vs representation quality.} 
+Lower latent predictions loss does not imply that the feautre representations are class-discriminative. 
+This can be falsified if we observe the opposite.
+% Held-out latent loss does not rank representations by probe accuracy, while
+% the effective rank of the features does. \emph{Falsified} if lower held-out loss goes with higher accuracy across
+% checkpoints and across variants.
+
+%=====================================================================================================
+\section{Failure-mode diagnosis}
+\label{sec:failure}
+\subsection{Main failure: noise robustness degrades as the representation improves}
+\obs Accuracy at $\sigma{=}0.15$ rises to 35.0\% at step 1{,}900 and then falls monotonically to 22.0\% at 15k (seed 0,
+fixed probe), while clean accuracy keeps rising (Fig.~\ref{fig:baseline}c). Over 5 seeds the final value is $22.2{\pm}1.0$\%,
+below the random encoder ($26.6{\pm}1.3$\%). 
+% Over steps $\ge$500 the Spearman
+% correlation between effective rank and $\sigma{=}0.15$ accuracy is $\rho={-}0.98$ (with clean validation accuracy
+% $\rho={+}0.92$). 
+The cosine between clean and noisy features of the same image drops from 0.997 to 0.69
+(Fig.~\ref{fig:baseline}d). The failure is not specific to our seed or masks: every one of the 6 pretrained variants in
+Tab.~\ref{tab:h1} ends between 17.0\% and 31.2\% at $\sigma{=}0.15$.
+
+\obs \emph{The information is still there} (Tab.~\ref{tab:noise}). We retrain only the linear probe, on the \emph{same
+frozen} baseline encoder, with a \emph{mixed} probe-train set: in every one of the 100 probe epochs each of the 2k probe-train
+images is used clean or, with probability $\tfrac12$, as a noisy copy with a fresh $\sigma{=}0.15$ draw (mask and noise
+seeds disjoint from the test-noise seed). Standardisation statistics come from the clean and all noisy probe-train features,
+and $(\mathrm{lr},\mathrm{wd})$ is selected on the mean of clean and noisy ($\sigma{=}0.15$) validation accuracy. This probe
+gives \textbf{39.6\%} at $\sigma{=}0.15$ (+17.6 points) with unchanged clean accuracy (48.8\%), far above the same procedure
+on the random encoder (31.3\%).
+
+\interp The pretrained features of a noisy image are informative but lie in a different region of feature space than
+the clean features the probe was fit on. 
+% As training proceeds the encoder spends its growing rank on fine, local
+% structure, which is exactly what i.i.d.\ pixel noise perturbs. 
+As training proceeds, the encoder slowly starts learning the context patch features to predict the target features and 
+its sensitivity to noise increases. Since we are only masking the target blocks on the input image for the context encoder,
+its robustness to occlusion increases but the context feature representations are still sensitive to high noise. 
+Using a larger encoder (increasing the number of transformer blocks, heads, and the hidden dimension) might help with this,
+because it allows the encoder to learn more semantic features, making it more robust to high noise. 
+We are also not augmenting the input images in I-JEPA (since I-JEPA proposes an augmentation-free self-supervsied pretraining method,
+thereby removing the need to hand-craft augmentations with respect to the downstream task). Due to this, there is no direct supervision
+for the encoder to be invariant to noise. In our pipeline the only
+augmentation is RandomResizedCrop, which is no defence against pixel noise. For diagnosis, we trained the probe using the frozen baseline
+context encoder with noise augmentation and observe that its robustness to noise ($\sigma{=}0.15$) increases. This means that 
+noisy feature representations from the encoder are still class-discriminative and seperable, but are very sensitive to high noise when 
+comparing the results against the clean-trained probe.
+
+% This is consistent with what the paper reports about
+% I-JEPA: it is trained \emph{without} hand-crafted view augmentations~\cite[Sec.~1]{assran2023ijepa}, so nothing in the
+% objective asks for invariance to any perturbation, and its representations keep much of the local structure of the
+% input~\cite[App.~E.1, Tab.~4]{assran2023ijepa} (it beats view-invariant methods on counting and depth). 
+
+\subsection{Loss does not track representation quality (H2)}
+\label{sec:h2}
+\obs (Fig.~\ref{fig:baseline}a.) \emph{Steps 0--200:} the held-out loss falls from 0.495 to 0.179, but the loss with
+another image's context falls identically (0.494 $\to$ 0.198), and the content-free per-position mean target scores
+\emph{lower} than both until step $\approx$250 (0.12). \emph{Steps 250--700:} the real-context loss separates from the
+other-image loss and reaches its minimum, 0.086, at step 700, while validation accuracy (37.9\%) and effective rank (28) are
+still at random-encoder level. \emph{Steps $>$700:} the content-free loss rises from 0.12 to 0.27, the held-out loss rises
+% to 0.149, and accuracy climbs to 51.0\% (val). 
+% Over steps $\ge$500, Spearman $\rho(\text{held-out loss},\text{val acc})={+}0.65$:
+% higher loss goes with \emph{better} features. 
+Across the variants of Tab.~\ref{tab:h1} the loss does not rank them
+either (e.g.\ scattered has the lowest loss, 0.113, but the worst noise accuracy, 17.0\% at $\sigma{=}0.15$).
+
+\interp Early on, the EMA target encoder is still mostly its random initialisation, and a random ViT with additive sin--cos
+positions produces features dominated by \emph{position}: a predictor that knows only the target position already matches
+them, so the first drop of the loss is learnt from positional embeddings alone, without looking at the image. By step 500
+the predictor uses some image content (real-context loss 0.078--0.094 vs 0.21 with another image's context), but the
+image-dependent part of the target is small and low-rank, so it is easy to regress and carries little class information.
+As the EMA target moves away from its initialisation, its features become image-specific (the content-free loss rises), the
+prediction task becomes harder (loss rises) and the context encoder has to infer the target from the content of the visible
+patches, which is when semantic, class-relevant features emerge. Representation quality is therefore read from the probe,
+the robustness curves and the collapse diagnostics (rank 22$\to$61, top-1 singular-value share 0.73$\to$0.12, pairwise cosine
+0.84$\to$0.29: no collapse), not plainly from the loss. The training latent predictor loss curve can show signs of feature 
+collapse if the loss does not increase after its first dip. \textbf{H2 is supported.} Losses of different variants are not comparable
+anyway, because each has its own evolving target encoder.
+
+% \subsection{Severe occlusion: mostly missing evidence}
+% \obs At 15k steps the clean-trained probe keeps 58\% of clean accuracy at 40\% occlusion (28.2/48.8); an oracle probe refit
+% on occluded probe images reaches 38.4\%. At 5k steps the supervised reference loses the same fraction as I-JEPA
+% (retention 0.59 vs 0.57). \interp A $20{\times}20$ px square often removes the class evidence itself (a failure no
+% representation can fully avoid); the remaining gap is a probe/feature shift like the noise failure, smaller in size.
+
+%=====================================================================================================
+\section{Research change: masking geometry (Part B)}
+\label{sec:partb}
+\textbf{Change.} We added a sampler interface (\texttt{cfg["mask\_strategy"]}) and a \emph{fixed-count} rule (declared context and
+target sizes with random selection, as in fixed-size multi-block collators): per image, positions are redrawn until the context block minus all
+target blocks offers $\ge$\texttt{ctx\_size}=20 patches and the target blocks $\ge$\texttt{tgt\_size}=32 patches; then exactly
+20 and 32 indices are drawn uniformly. This removes the batch-minimum trimming, so every candidate below sees the
+\emph{same} token counts at every step and batch size (the baseline's 45 target tokens contain $\approx$32 distinct patches;
+20+45 distinct patches do not fit on 64). As in upstream I-JEPA, each target block is predicted as its own set and the
+losses are averaged
+% : with $n$ blocks, $32/n$ tokens are drawn from each block (4$\times$8, 2$\times$16, or one set of 32 for
+% \texttt{1\_large}), so a patch covered by two overlapping blocks can be a target twice; \texttt{scattered} predicts each of its
+% 6--16 small blocks whole (32--36 tokens). 
+Core code is in
+App.~\ref{app:diff}; masks are illustrated in Fig.~\ref{fig:masks}. Parameters are unchanged by every sampler; runtime and
+memory grow only with the number of target sets (Sec.~\ref{sec:partc}).
+
+\textbf{Block shapes (all strategies).} 
+% As upstream, a scale $s$ and an aspect ratio $r$ become a block of $h{\times}w$
+% patches with $h=\mathrm{round}\sqrt{64\,s\,r}$, $w=\mathrm{round}\sqrt{64\,s/r}$ (\texttt{\_bsize}, clipped to 1--8).
+One target-block shape and one context-block shape are drawn per \emph{batch}; block positions are drawn per \emph{image},
+uniformly over the grid. The context block is always square ($r{=}1$, $s\sim U(0.85,1)$): $8{\times}8$ in 81\% and
+$7{\times}7$ in 19\% of batches, and the visible context is the context block minus every target patch. Target blocks use
+$r\sim U(0.75,1.5)$ and a strategy-specific scale (Tab.~\ref{tab:masks}). Under the fixed-count rule a target shape with
+$n\,h\,w<32$ is redrawn at once, and if one image finds no valid position within 200 draws, the batch's shapes are redrawn
+(0.09 times per batch for \texttt{1\_large}, 0.14 for \texttt{2\_large\_nonoverlap}, 0 otherwise).
+
+\begin{table}[t]\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Masking strategies. Target-block scale $s$ (aspect $r\sim U(0.75,1.5)$ for all; context block: square, $s\sim
+U(0.85,1)$, $8{\times}8$ or $7{\times}7$), the resulting target shapes $h{\times}w$ with their share of batches (measured over
+400 batches of 64), the placement rule, the context rule and the target sets (one loss term each).}
+\label{tab:masks}
+\resizebox{\linewidth}{!}{\begin{tabular}{llllll}\toprule
+Strategy & Blocks, scale $s$ & Target shapes (\% of batches) & Placement & Context tokens & Target sets \\\midrule
+Baseline (upstream) & 4, $U(0.15,0.20)$ & $4{\times}3$ 54, $3{\times}3$ 27, $3{\times}4$ 19, $4{\times}4$ 1 & may overlap & batch minimum, 4--31 & 4 whole blocks (9--16) \\
+\texttt{1\_large} & 1, $U(0.52,0.62)$ & $7{\times}5$ 42, $6{\times}6$ 33, $7{\times}6$ 9, $6{\times}7$ 7, $5{\times}7$ 7, $8{\times}5$ 3 & -- & exactly 20 & 1 set of 32 from the block \\
+\texttt{scattered} & until $\ge$32 patches, $U(0.04,0.07)$ & $2{\times}2$ 88, $2{\times}1$ 11, $1{\times}2$ 1, $3{\times}2$ 1 & disjoint & exactly 20 & every block whole: 8$\times$4, 16$\times$2, 6$\times$6 \\
+\texttt{2\_large\_overlap} & 2, $U(0.30,0.40)$ & $5{\times}4$ 31, $5{\times}5$ 28, $6{\times}4$ 20, $4{\times}5$ 15, other 6 & may overlap & exactly 20 & 2 sets of 16, one per block \\
+\texttt{2\_large\_nonoverlap} & 2, $U(0.25,0.32)$ & $5{\times}4$ 46, $4{\times}4$ 35, $4{\times}5$ 19 & disjoint & exactly 20 & 2 sets of 16, one per block \\
+overlap cap $<$25\% & 4, $U(0.15,0.20)$ & $4{\times}3$ 50, $3{\times}3$ 27, $3{\times}4$ 23, $4{\times}4$ 1 & $|A\cap B|/|A|<0.25$ & batch minimum $\le$20, 12--20 & 4 sets of 8, one per block \\
+\bottomrule\end{tabular}}
+\end{table}
+
+\textbf{Baseline (upstream).} Per image, 4 blocks of the batch's shape (9--16 patches) are placed independently and may overlap
+(union $\approx$32 patches); the context block is placed and the target patches are removed from it.
+% (its position is redrawn up to 10 times until $\ge$4 patches remain). 
+All context lists are then randomly subsampled to the batch minimum
+(mean 20.3, range 4--31 at $B{=}64$), and every block is a target set with all its patches.
+% (36, 48 or 64 target tokens).
+
+\textbf{Proposed: \texttt{1\_large}.} One block of 35--42 patches ($s\sim U(0.52,0.62)$; the 30-patch shapes $6{\times}5$ and
+$5{\times}6$ are rejected because they cannot supply 32 targets), so more than half of the image is hidden as one
+contiguous region. Positions are redrawn until the context block minus the block keeps $\ge$20 patches; then exactly 20
+context and 32 target patches (of the 35--42) are drawn uniformly, and the 32 are one target set. With one large hole most
+target patches are several patches away from any visible patch, so they can only be predicted from image-level content.
+
+\textbf{Ablation: \texttt{scattered}.} Per batch one \emph{small} shape is drawn ($s\sim U(0.04,0.07)$): $2{\times}2$ in 88\%
+of batches, $2{\times}1$ or $1{\times}2$ in 12\%, rarely $3{\times}2$. The \emph{number} of blocks is not set; it follows from the
+target budget. Per image, blocks of that shape are added one at a time, each at a uniform position among those that share no
+patch with the earlier blocks, until their union covers $\ge$\texttt{tgt\_size}=32 patches. Because the blocks are disjoint
+and of equal size $a=h\,w$, this takes exactly $\lceil 32/a\rceil$ blocks: 8 blocks of $2{\times}2$ (32 patches), 16 of
+$2{\times}1$ (32) or 6 of $3{\times}2$ (36, the only case above 32). Then the context block is placed; if it keeps fewer than
+\texttt{ctx\_size}=20 patches after removing the targets (possible only for a $7{\times}7$ context block), all positions of
+that image are redrawn. So the target budget sets how many blocks there are, and the context budget only rejects layouts.
+Exactly 20 context patches are drawn, and every block is predicted whole as its own target set; since all images of a batch
+use the same shape, they all have the same number of sets. The hidden region is the same size as in \texttt{1\_large} but
+is no longer contiguous, and every target has visible context one patch away.
+
+\textbf{Two large blocks.} \texttt{2\_large\_overlap}: two blocks of 16--30 patches (mostly 20--25; $s\sim U(0.30,0.40)$),
+placed independently (they may overlap), with positions redrawn until their union has $\ge$32 patches and the context block
+keeps $\ge$20. 
+% 16 target patches are drawn from each block (one set each), so a patch in the overlap can be drawn twice.
+\texttt{2\_large\_nonoverlap}: two blocks of 16--20 patches ($s\sim U(0.25,0.32)$; $5{\times}3$ is rejected because
+$2{\times}15<32$), the second placed uniformly among the positions that share no patch with the first; otherwise as above.
+
+\textbf{Overlap cap ($<$25\%).} Four blocks of the baseline's shape, but the 4-block layout is drawn uniformly from all
+layouts (exact enumeration of the position sets) in which every pair satisfies $|A\cap B|/|A|<0.25$, whose union has
+$\ge$32 patches and which leave $\ge$12 patches on the full grid. Context: the context block minus the targets, or the whole
+grid minus the targets if fewer than 16 patches would remain; each image offers up to 20 context patches and the batch uses
+the batch minimum (mean 16.8). 
+% 8 target patches are drawn from each block (4 sets of 8).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_masks.pdf}
+\caption{Two sampled masks per strategy on the $8{\times}8$ patch grid (image 0 of a batch of 64; blue: visible context,
+orange: target tokens, light orange: patches of a target block not drawn as targets, grey: neither). Black boxes: the
+individual target blocks; each is predicted as its own target set. Below each mask: number of target blocks, context and target tokens.}
+\label{fig:masks}
+\end{figure}
+
+\input{tables/tab_h1}
+
+%=====================================================================================================
+\section{Controlled comparison (Part C) and why each geometry did (not) help}
+\label{sec:partc}
+\input{text_partc}
+
+%=====================================================================================================
+\section{Targeted fix for the failure mode: noise on the context input}
+\label{sec:noise}
+\input{text_noise}
+
+%=====================================================================================================
+\section{Answers to the assignment questions}
+\label{sec:answers}
+\input{text_answers}
+
+\section{Limitations}
+\begin{itemize}
+\item Most Part B/C variants have one pretraining seed; the 1\_large and baseline estimates use 5 seeds. In particular the
+1\_large vs scattered noise contrast compares 5 seeds (25.0--31.2\% at $\sigma{=}0.15$) with one scattered seed (17.0\%).
+\item The mechanism (image-level vs local and positional prediction) is inferred from the collapse and held-out-loss
+diagnostics (Fig.~\ref{fig:h1mech}); no run intervenes on it directly. Effects below
+$\approx$1.5 points (clean, occlusion) or $\approx$3 points ($\sigma{=}0.15$, seed std 1.0 for the baseline and 2.3 for 1\_large) are not resolved.
+\item Every comparison uses 15k steps, 30$\times$ the assignment's 500; at 500 steps no variant learns useful features.
+Hyper-parameters were not re-tuned for any variant.
+\item \texttt{ctx\_noise} uses $\sigma_{\max}{=}0.2$, chosen knowing the strongest test noise is 0.15; it was not tuned on
+test accuracy, but its robustness to \emph{other} corruptions is untested.
+\item The linear probe is fit on only 2{,}000 images; CIFAR-10 at $32{\times}32$ with 64 tokens is far from the paper's setting.
+\end{itemize}
+
+\section*{Reproducibility, attribution and AI disclosure}
+Upstream: \texttt{keon/jepa} @ \texttt{d55bab7b} (MIT), model code copied verbatim into \texttt{models/modified\_ijepa.py}.
+Every run: \texttt{bash scripts/train.sh configs/<experiment>.yaml [k]} then \texttt{bash scripts/evaluate.sh runs/<name>\_s<k>}
+(mask samplers bit-identical to the notebooks in which the experiments were developed; the evaluation reproduces the
+stored results exactly). Seeds: splits 0/1,
+corruptions 1000--1011, probe 0, held-out masks 12345, pretraining 0 (and 1--4 where stated), context noise 50000+seed.
+Hardware: NVIDIA L40S (runs) and RTX 2080 Ti (interactive). An AI assistant (Claude, Anthropic) was used to build the
+mask strategies, the helper functions and the downstream evaluation; every result was produced by the code in the
+repository and checked against the notebooks.
+
+{\small
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+}
+
+\appendix
+\section{Code changes}
+\label{app:diff}
+\input{text_appendix}
+
+\section{Automated checks}
+\label{app:tests}
+\input{text_tests}
+
+\clearpage
+\makeatletter\setlength{\@fptop}{0pt}\makeatother   % float pages: figures at the top
+\section{Training curves of all runs}
+\label{app:curves}
+\input{text_curves}
+
+\end{document}

@@ -1,0 +1,5 @@
+# H3: upstream masks; each image's context-encoder input is noised with probability p, sigma ~ U(0, sigma_max)
+# (targets stay clean). The noise generator is seeded with seed + the run seed.
+base: baseline.yaml
+name: ctx_noise
+ctx_noise: {p: 0.5, sigma_max: 0.2, seed: 50000}

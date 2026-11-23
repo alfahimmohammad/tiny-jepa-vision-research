@@ -1,0 +1,19 @@
+\textbf{pytest} (\texttt{tests/}, 49 tests, all passing on CPU in $\approx$12\,s): for every mask-strategy file, valid and
+disjoint context/target indices, the declared token counts at batch sizes 1/16/64 and determinism given a seed; the
+\texttt{upstream} strategy equals \texttt{sample\_ijepa\_masks} exactly; with \texttt{per\_block} every target set lies inside one block, and \texttt{per\_block: false}
+gives one set drawn from the union; the overlap cap holds;
+the leak guard detects an injected overlap; after one training step the target encoder equals
+$m\,\bar\theta_0+(1-m)\,\theta_1$ exactly, receives no gradient, and $m{=}1$ freezes it; shapes and finite outputs; the
+context encoding does not depend on target pixels; context noise is seeded and leaves non-noised images unchanged;
+a 2-step CPU smoke run of every experiment config; splits disjoint, sized and deterministic; corruptions paired and in
+range; probe selection leaves the encoder's parameter hash unchanged. Equivalence with the notebooks: with \texttt{per\_block: false} all mask
+configs give bit-identical masks to the notebook samplers (300 batches each), and \texttt{evaluate.py} on the
+notebook checkpoints reproduces every stored metric to $10^{-6}$.
+
+\textbf{Notebook assertions} (run on every execution): section-10 sanity checks (sampler $=$ upstream, shapes, stop-gradient,
+EMA, frozen probe, identical splits/corruption seeds); for each new sampler: exact token counts at batch sizes 1/7/64, no
+context/target overlap, rectangles of the intended size inside the intended region, overlap rules checked by brute force,
+sampled layout distribution equal to an independent rejection sampler (total-variation distance at the sampling-noise
+level); context noise: $p{=}0$ is bit-identical to the baseline, noised fraction 0.496, mean $\sigma$ 0.099, measured
+pixel noise / $\sigma$ = 0.996, target encoder input equals the clean batch, and the step-by-step loop equals
+\texttt{pretrain()} to $3{\cdot}10^{-8}$ including after a stop/resume.
